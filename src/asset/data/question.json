@@ -1,0 +1,50 @@
+[
+  {
+    "type": 0,
+    "question": "哪一首歌不是电影主题曲",
+    "media": null,
+    "right": 2,
+    "answers": [
+      "菊花台",
+      "漂移",
+      "发如雪",
+      "轨迹"
+    ]
+  },
+  {
+    "type": 1,
+    "question": "下面这首歌出自哪张专辑",
+    "media": "https://wlwol.cn/asset/gbqq.mp3",
+    "right": 3,
+    "answers": [
+      "十一月的肖邦",
+      "叶惠美",
+      "依然范特西",
+      "周杰伦的床边故事"
+    ]
+  },
+  {
+    "type": 2,
+    "question": "下图的造型出自哪部电影",
+    "media": "https://wlwol.cn/asset/jay3.jpg",
+    "right": 2,
+    "answers": [
+      "刺陵",
+      "头文字D",
+      "大灌篮",
+      "不能说的秘密"
+    ]
+  },
+  {
+    "type": 3,
+    "question": "下面的视频出自哪部专辑",
+    "media": "https://wlwol.cn/asset/1578261425430.mp4",
+    "right": 2,
+    "answers": [
+      "范特西",
+      "依然范特西",
+      "七里香",
+      "叶惠美"
+    ]
+  }
+]

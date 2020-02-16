@@ -1,0 +1,33 @@
+.audio-view{
+    height: 120px;
+    border-radius: 12px;
+    background: #ffc22b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.3);
+    .poster{
+        width: 80px;
+        height: 80px;
+        border-radius: 80px;
+        background: url(../../asset/img/jay2.jpg) no-repeat center;
+        background-size: cover;
+        margin: 0 40px;
+        border-radius: 50%;
+    }
+    .tip{
+        color: #b16512;
+        flex: 1;
+    }
+    .btn{
+        width: 80px;
+        height: 80px;
+        border-radius: 80px;
+        background: url(../../asset/img/play.png) no-repeat center;
+        background-size: 40px;
+        margin: 0 30px;
+        &.pause{
+            background-image: url(../../asset/img/stop.png);
+        }
+    }
+}
