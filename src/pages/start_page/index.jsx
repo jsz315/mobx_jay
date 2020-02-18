@@ -62,7 +62,7 @@ class StartPage extends Component {
     }
     else{
       console.log("获取本地用户成功")
-      Taro.showToast({title: '获取本地用户成功', icon: 'none'})
+      Taro.showToast({title: '本地登录成功', icon: 'none'})
     }
   }
 

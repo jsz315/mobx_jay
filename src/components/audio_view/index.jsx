@@ -16,7 +16,7 @@ class AudioView extends Component {
     this.state = {
         percent: 0,
         playing: false,
-        tip: '点击播放音频片段'
+        tip: '点击播放音频'
     }
   }
 
@@ -105,18 +105,25 @@ class AudioView extends Component {
     // if(questionStore.audioPlaying){
     //     cls = "pause"
     // }
+    let volume = this.props.volume;
+    let v = volume.toFixed(2)
+
     console.log(`questionStore.audioPlaying = ${questionStore.audioPlaying}`)
     return (
       <View className='audio-view'>
         <View className='poster'></View>
         <View className='tip'>
-          <View className='word'>{this.state.tip}</View>
+          <View className='word'>{this.state.tip}({v})</View>
           <View className='help'>如听不到声音，请尝试调节音量</View>
         </View>
         <View className={`btn ${cls}`} onClick={this.toggler.bind(this)}></View>
       </View>
     )
   }
+}
+
+AudioView.defaultProps = {
+  volume: 0.8
 }
 
 export default AudioView 

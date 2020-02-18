@@ -58,6 +58,8 @@ function getPlatform(){
     platform = 0;
   } else if (process.env.TARO_ENV === 'tt') {
     platform = 1;
+  } else if (process.env.TARO_ENV === 'qq') {
+    platform = 2;
   }
   console.log(`当前平台：${process.env.TARO_ENV} = ${platform}`);
   return platform;
@@ -82,6 +84,10 @@ function getOpenid(code){
     });
   } else if (process.env.TARO_ENV === 'tt') {
     return httpRequest(host + '/tt/login', 'GET', {
+      code: code
+    });
+  } else if (process.env.TARO_ENV === 'qq') {
+    return httpRequest(host + '/qq/login', 'GET', {
       code: code
     });
   }

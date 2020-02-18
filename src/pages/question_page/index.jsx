@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Video, Image, Ad } from '@tarojs/components'
+import { View, Button, Text, Video, Image, Ad, Audio } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 
 import './index.less'
@@ -210,8 +210,11 @@ class QuestionPage extends Component {
     else if(type == 2){
       innerAudioContext.src = url
       console.log("innerAudioContext.volume " + innerAudioContext.volume);
-      innerAudioContext.obeyMuteSwitch = false;
-      mediaView = <AudioView className='audio' toggler={this.toggler.bind(this)}></AudioView>
+      // innerAudioContext.obeyMuteSwitch = false;
+
+      // Taro.showToast({title: "当前音量：" + innerAudioContext.volume, icon: 'none'})
+
+      mediaView = <AudioView volume={innerAudioContext.volume} className='audio' toggler={this.toggler.bind(this)}></AudioView>
     }
     else if(type == 3){
       mediaView = <VideoView className='video' src={url}></VideoView>
@@ -267,7 +270,6 @@ class QuestionPage extends Component {
             <AdView questionStore={questionStore}></AdView>
           )
         }
-        
       </View>
     )
   }
