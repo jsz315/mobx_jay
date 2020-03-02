@@ -6,6 +6,8 @@ import './index.less'
 
 let innerAudioContext;
 
+@inject('questionStore')
+@observer
 class StatusView extends Component {
   constructor(props){
 	  super(props)
@@ -36,6 +38,13 @@ class StatusView extends Component {
 
   componentDidHide () { }
 
+  getUserInfo(e){
+    const { questionStore } = this.props
+    if(!questionStore.nickName){
+      questionStore.changePopLogin(true);
+    }
+  }
+
   render () {
     const { questionStore } = this.props
     //console.log('questionStore prop')
@@ -46,13 +55,14 @@ class StatusView extends Component {
     }
     let ary = ['', 'man', 'woman'];
     let sex = ary[questionStore.gender];
-
+    let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
+    let nickName = questionStore.nickName || "点击登录账户";
     return (
       <View className='status-view'>
-        <Image className='avatar' src={questionStore.avatarUrl}></Image>
+        <Image className='avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
         <View className='status'>
           <View className='info'>
-            <View className='name'>{questionStore.nickName}</View>
+            <View className='name' onClick={this.getUserInfo.bind(this)}>{nickName}</View>
             <View className={`gender ${sex}`}></View>
           </View>
           <View className='info'>

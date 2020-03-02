@@ -1,6 +1,16 @@
 .question-page{
+  .move{
+    opacity: 0;
+    &.moveIn{
+      animation: turnMoveIn 300ms;
+      animation-fill-mode: forwards;
+    }
+    &.moveOut{
+      animation: turnMoveOut 300ms;
+      animation-fill-mode: forwards;
+    }
     .question{
-      margin-top: 100px;
+        margin-top: 100px;
         font-size: 32px;
         color: #ffffff;
         padding: 100px 40px 100px;
@@ -49,4 +59,20 @@
             }
         }
     }
+  }
+}
+
+@keyframes turnMoveIn{
+  0%{transform: translateY(900px); opacity: 0;}
+  10%{transform: translateY(800px); opacity: 1;}
+  80%{transform: translateY(-20px); opacity: 1;}
+  90%{transform: translateY(4px); opacity: 1;}
+  100%{transform: translateY(0px); opacity: 1;}
+}
+
+@keyframes turnMoveOut{
+  0%{transform: translateY(0px); opacity: 1;}
+  10%{transform: translateY(4px); opacity: 1;}
+  90%{transform: translateY(-800px); opacity: 1;}
+  100%{transform: translateY(-900px); opacity: 0;}
 }

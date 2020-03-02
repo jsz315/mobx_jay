@@ -41,13 +41,12 @@ class StartPage extends Component {
     }
     console.log('openid = ' + openid);
 
+    /*
     if(!questionStore.nickName){
       let authorizeRes = await scope.authorize("scope.userInfo");
       if(authorizeRes){
         let userInfoRes = await scope.getUserInfo();
         if(userInfoRes){
-          //console.log("userInfoRes");
-          //console.log(userInfoRes);
           this.saveUser(userInfoRes);
         }
         else{
@@ -55,15 +54,16 @@ class StartPage extends Component {
         }
       }
       else{
-        this.setState({
-          showUserBtn: true
-        })
+        // this.setState({
+        //   showUserBtn: true
+        // })
       }
     }
     else{
       console.log("获取本地用户成功")
       Taro.showToast({title: '本地登录成功', icon: 'none'})
     }
+    */
   }
 
   saveUser(userInfo){
@@ -136,23 +136,23 @@ class StartPage extends Component {
   render () {
     const { questionStore } = this.props
 
+    // {
+    //       this.state.showUserBtn == true && (
+    //         <View className='mask'>
+    //           <View className='pop'>
+    //             <View className='user-tip'>无需注册，直接点击下面按钮即可使用当前账户登录</View>
+    //             <Button className='user-btn' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
+    //           </View>
+    //         </View>
+    //       )
+    //     }
+
     return (
       <View className='start-page'>
         <View className='btns'>
           <View className="btn" onClick={this.jump.bind(this, 1)}>开始测试</View>
           <View className="btn" onClick={this.jump.bind(this, 2)}>查看榜单</View>
         </View>
-        {
-          this.state.showUserBtn == true && (
-            <View className='mask'>
-              <View className='pop'>
-                <View className='user-tip'>无需注册，直接点击下面按钮即可使用当前账户登录</View>
-                <Button className='user-btn' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
-              </View>
-            </View>
-          )
-        }
-        
       </View>
     )
   }

@@ -14,9 +14,16 @@ const shareData = {
   }
 }
 
-const platform = getPlatform();
-initShare();
+let filterData = {
+  weapp: false,
+  tt: false,
+  qq: false
+}
 
+const platform = getPlatform();
+
+initShare();
+initFilter();
 
 function getUrl(type, file){
   if(type == 1){
@@ -75,6 +82,21 @@ async function initShare(){
     shareData.desc = obj.desc;
     shareData.imageUrl = obj.imageUrl;
   }
+}
+
+async function initFilter(){
+  let res = await httpRequest(host + '/yun/mini/filter', 'GET', {
+    v: Math.random()
+  });
+  if(res.data){
+    console.log("filter data");
+    console.log(res.data);
+    filterData = res.data;
+  }
+}
+
+function isFilter(){
+  return filterData[process.env.TARO_ENV];
 }
 
 function getOpenid(code){
@@ -161,5 +183,6 @@ export default {
   getLevelQuestion,
   getAllQuestion,
   shareData,
-  platform
+  platform,
+  isFilter
 }

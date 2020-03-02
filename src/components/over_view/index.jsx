@@ -4,9 +4,12 @@ import { observer, inject } from '@tarojs/mobx'
 
 import './index.less'
 import global from '../../core/global'
+import ShareView from '../../components/share_view'
 
 let innerAudioContext;
 
+@inject('questionStore')
+@observer
 class OverView extends Component {
   constructor(props){
 	  super(props)
@@ -50,6 +53,11 @@ class OverView extends Component {
     })
   }
 
+  share(){
+    const { questionStore } = this.props
+    questionStore.changePopShare(true)
+  }
+
   render () {
     const { questionStore } = this.props
     if(!questionStore){
@@ -74,7 +82,7 @@ class OverView extends Component {
           {
             questionStore.detail.map((item, index) => {
               return (
-                <View className='row-box'>
+                <View className='row-box' key={index}>
                   <View className='row-name'>{item.name}</View>
                   <View className='row-right'>{item.right}</View>
                   <View className='row-score'>{item.score}</View>
@@ -90,10 +98,12 @@ class OverView extends Component {
           <View className='score-type'>{questionStore.curLevel.name}杰迷</View>
           
           <View className='btns'>
-            <Button className='btn' open-type="share">分享</Button>
-            <Button className='btn' onClick={this.goon.bind(this)}>排名</Button>
+            <View className='btn' onClick={this.share.bind(this)}>分享</View>
+            <View className='btn' onClick={this.goon.bind(this)}>排名</View>
           </View>
         </View>
+
+        {questionStore.popShare && <ShareView questionStore={questionStore}></ShareView>}
       </View>
     )
   }

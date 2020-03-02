@@ -41,6 +41,7 @@ const questionStore = observable({
   popShare: false,
   popOver: false,
   popUpdate: false,
+  popLogin: false,
   levelName: '',
   // myRank: '--',
 
@@ -56,6 +57,10 @@ const questionStore = observable({
 
   changeShowAd(value){
     this.showAd = value
+  },
+
+  changePopLogin(value){
+    this.popLogin = value
   },
 
   changeAudioSrc(value){
@@ -87,6 +92,10 @@ const questionStore = observable({
     this.popOver = value
   },
 
+  changePopShare(value){
+    this.popShare = value
+  },
+
   next() {
     if(this.id == this.list.length - 1){
       if(levelId < levels.length - 1){
@@ -106,7 +115,8 @@ const questionStore = observable({
 
   initLevel(){
     this.curLevel = levels[levelId];
-    this.list =  tooler.randomList(this.curLevel.list, 10);
+    let tempList = this.filter(this.curLevel.list);
+    this.list =  tooler.randomList(tempList, 10);
     this.levelName = this.curLevel.name;
     this.id = 0;
     //console.log(this.levelName)
@@ -115,6 +125,14 @@ const questionStore = observable({
     setTimeout(() => {
       this.popUpdate = false
     }, 2000);
+  },
+
+  filter(list){
+    console.log('global.filter = ' + global.isFilter());
+    if(global.isFilter()){
+      return list.filter(item => item.type != 2);
+    }
+    return list;
   },
 
   changeOpenid(value){

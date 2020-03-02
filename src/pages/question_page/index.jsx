@@ -9,6 +9,8 @@ import StatusView from '../../components/status_view'
 import UpdateView from '../../components/update_view'
 import OverView from '../../components/over_view'
 import AnswerView from '../../components/answer_view'
+import LoginView from '../../components/login_view'
+import ShareView from '../../components/share_view'
 import AdView from '../../components/ad_view'
 import global from '../../core/global'
 
@@ -22,24 +24,13 @@ let wrongSound = null;
 class QuestionPage extends Component {
 
   constructor(props){
-	super(props)
-  this.state = {
-    showAnswer: false,
-    isRight: false,
-    clickId: -1
-  }
-    // this.state = {
-    //   video: 'https://wlwol.cn/asset/1578261425430.mp4',
-    //   image: 'https://wlwol.cn/asset/jay7.jpeg',
-    //   question: "混合双打d",
-    //   type: 0,
-    //   answers: [
-    //     "方法1",
-    //     "方法2",
-    //     "方法3",
-    //     "方法4",
-    //   ]
-    // }
+    super(props)
+    this.state = {
+      showAnswer: false,
+      isRight: false,
+      clickId: -1,
+      action: 1
+    }
   }
 
   config = {
@@ -154,6 +145,17 @@ class QuestionPage extends Component {
           scrollTop: 0
         })
         questionStore.next()
+
+        this.setState({
+          action: 2
+        })
+
+        setTimeout(()=>{
+          this.setState({
+            action: 1
+          })
+        }, 600)
+        
       }
     }, 2000)
 
@@ -254,14 +256,16 @@ class QuestionPage extends Component {
     return (
       <View className='question-page'>
         <StatusView questionStore={questionStore}></StatusView>
-        <View className='question'>
-          <Text>{questionStore.id + 1}. {question}</Text>
-          <View className='media'>
-            {mediaView}
+        <View className={`move ${this.state.action == 1 ? "moveIn" : "moveOut"}`}>
+          <View className='question'>
+            <Text>{questionStore.id + 1}. {question}</Text>
+            <View className='media'>
+              {mediaView}
+            </View>
           </View>
-        </View>
-        <View className={`list ${questionStore.showAd == false ? "hide-ad" : ""}`}>
-          {list}
+          <View className={`list ${questionStore.showAd == false ? "hide-ad" : ""}`}>
+            {list}
+          </View>
         </View>
         {popView}
         {answerView}
@@ -270,6 +274,12 @@ class QuestionPage extends Component {
             <AdView questionStore={questionStore}></AdView>
           )
         }
+        {
+          questionStore.popLogin && (
+            <LoginView questionStore={questionStore}></LoginView>
+          )
+        }
+        
       </View>
     )
   }

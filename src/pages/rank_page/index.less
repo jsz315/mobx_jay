@@ -4,8 +4,13 @@
   background-size: 100% auto;
   width: 100%;
   .my-rank-box{
-    padding: 20px;
-    background: rgba(9, 7, 169, 0.4);
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    padding: 20px 0;
+    background: rgba(9, 7, 169, 0.64);
     .my-rank{
       display: flex;
       justify-content: center;
@@ -17,6 +22,7 @@
         height: 48px;
         border-radius: 50%;
         background: #999999;
+        margin-left: 20px;
       }
       .my-tip{
         margin-left: 20px;
@@ -26,6 +32,7 @@
         display: none;
       }
       .my-btn{
+        padding: 0 20px;
         background: #b029ee;
         // width: 160px;
         color: #ffffff;
