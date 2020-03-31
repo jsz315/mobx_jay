@@ -28,8 +28,6 @@ class App extends Component {
       'pages/start_page/index',
       'pages/rank_page/index',
       'pages/question_page/index',
-      // 'pages/list_page/index',
-      // 'pages/edit_page/index'
     ],
     window: {
       backgroundTextStyle: 'light',

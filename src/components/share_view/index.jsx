@@ -72,7 +72,7 @@ class ShareView extends Component {
     // global.platform == 1
     var views = list.map(item=>{
       return (
-        <Button className='btn' open-type={`${global.platform == item.type ? "share" : ""}`} onClick={this.share.bind(this, item)}>
+        <Button key={item} className='btn' open-type={`${global.platform == item.type ? "share" : ""}`} onClick={this.share.bind(this, item)}>
           <View className={`ico type${item.type}`}></View>
           <View className='name'>{item.name}</View>
         </Button>

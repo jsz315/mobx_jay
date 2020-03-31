@@ -25,9 +25,36 @@ class StartPage extends Component {
   }
 
   async componentWillMount () {
-    const { questionStore } = this.props
-    // questionStore.initAsync();
+    this.initData();
+    this.test();
+  }
 
+  test(){
+    Taro.connectSocket({
+      url: 'wss://wlwol.cn',
+      success: function () {
+        console.log('connect success')
+      }
+    }).then(task => {
+      task.onOpen(function () {
+        console.log('onOpen')
+        task.send({ data: 'xxx' })
+      })
+      task.onMessage(function (msg) {
+        console.log('onMessage: ', msg)
+        task.close()
+      })
+      task.onError(function () {
+        console.log('onError')
+      })
+      task.onClose(function (e) {
+        console.log('onClose: ', e)
+      })
+    })
+  }
+
+  async initData(){
+    const { questionStore } = this.props
     let openid = questionStore.openid;
     if(!openid){
       //console.log('scope.login')
@@ -40,30 +67,6 @@ class StartPage extends Component {
       }
     }
     console.log('openid = ' + openid);
-
-    /*
-    if(!questionStore.nickName){
-      let authorizeRes = await scope.authorize("scope.userInfo");
-      if(authorizeRes){
-        let userInfoRes = await scope.getUserInfo();
-        if(userInfoRes){
-          this.saveUser(userInfoRes);
-        }
-        else{
-          //console.log("获取用户数据失败");
-        }
-      }
-      else{
-        // this.setState({
-        //   showUserBtn: true
-        // })
-      }
-    }
-    else{
-      console.log("获取本地用户成功")
-      Taro.showToast({title: '本地登录成功', icon: 'none'})
-    }
-    */
   }
 
   saveUser(userInfo){
@@ -133,6 +136,11 @@ class StartPage extends Component {
     }
   }
 
+  bindContact (e) {
+    console.log(e.detail.path)
+    console.log(e.detail.query)
+  }
+
   render () {
     const { questionStore } = this.props
 
@@ -147,11 +155,15 @@ class StartPage extends Component {
     //       )
     //     }
 
+    //<Button className="btn" open-type="contact" bindcontact="handleContact">联系我们</Button>
+    //<Button className="btn" open-type="contact" onContact={this.bindContact.bind(this)}>联系我们</Button>
+
     return (
       <View className='start-page'>
         <View className='btns'>
           <View className="btn" onClick={this.jump.bind(this, 1)}>开始测试</View>
           <View className="btn" onClick={this.jump.bind(this, 2)}>查看榜单</View>
+          
         </View>
       </View>
     )
