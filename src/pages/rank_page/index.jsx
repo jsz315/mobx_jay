@@ -145,7 +145,7 @@ class RankPage extends Component {
           {
             this.state.ranks.slice(0, 3).map((item, index) => {
               return (
-                <View key={item.openid + index} className={`rank-role num${index + 1}`}>
+                <View key={item.openid + '_' + index} className={`rank-role num${index + 1}`}>
                   <Image className='rank-head' src={item.avatarUrl}></Image>
                   <View className='rank-name'>{item.nickName}</View>
                   <View className='rank-score'>{item.score}分</View>
@@ -160,7 +160,7 @@ class RankPage extends Component {
           {
             this.state.ranks.slice(3).map((item, index) => {
               return (
-                <View key={item.openid + index} className='rank-item'>
+                <View key={item.openid + ' ' + index} className='rank-item'>
                   <View className='rank-num'>{index + 4}</View>
                   {visibles[index] && <Image className='rank-head' src={item.avatarUrl}></Image>}
                   <View className='rank-nick'>{item.nickName}</View>
