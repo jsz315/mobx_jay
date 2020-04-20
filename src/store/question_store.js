@@ -43,7 +43,6 @@ const questionStore = observable({
   popUpdate: false,
   popLogin: false,
   levelName: '',
-  // myRank: '--',
 
   audioPlaying: false,
   audioSrc: null,
@@ -54,6 +53,8 @@ const questionStore = observable({
   nickName: global.readData("nickName"),
   avatarUrl: global.readData("avatarUrl"),
   gender: global.readData("gender"),
+
+  players: [],
 
   changeShowAd(value){
     this.showAd = value
@@ -86,6 +87,14 @@ const questionStore = observable({
       item.right = 0;
       item.lock = true;
     })
+  },
+
+  addPlay(){
+
+  },
+
+  removePlay(){
+
   },
 
   changePopOver(value){

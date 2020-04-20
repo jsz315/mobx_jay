@@ -31,7 +31,8 @@ class StartPage extends Component {
 
   test(){
     Taro.connectSocket({
-      url: 'wss://wlwol.cn',
+      // url: 'wss://wlwol.cn',
+      url: 'ws://127.0.0.1:5566',
       success: function () {
         console.log('connect success')
       }
@@ -90,13 +91,22 @@ class StartPage extends Component {
     //console.log('componentWillReact')
   }
 
-  componentDidMount () { }
+  componentDidMount () {
+    console.log('start componentDidMount', this)
+  }
 
-  componentWillUnmount () { }
+  componentWillUnmount () { 
+    console.log('start componentWillUnmount', this)
+  }
 
-  componentDidShow () { }
+  componentDidShow () {
+    console.log('start componentDidShow', this)
+  }
 
-  componentDidHide () { }
+  componentDidHide () {
+    
+    console.log('start componentDidHide', this)
+  }
 
   onShareAppMessage (option) {
     // option.from === 'button'
@@ -113,6 +123,12 @@ class StartPage extends Component {
       questionStore.reset();
       Taro.navigateTo({
         url: '/pages/question_page/index'
+      })
+    }
+    else if(n == 2){
+      questionStore.reset();
+      Taro.navigateTo({
+        url: '/pages/wait_page/index'
       })
     }
     else{
@@ -162,8 +178,8 @@ class StartPage extends Component {
       <View className='start-page'>
         <View className='btns'>
           <View className="btn" onClick={this.jump.bind(this, 1)}>开始测试</View>
-          <View className="btn" onClick={this.jump.bind(this, 2)}>查看榜单</View>
-          
+          <View className="btn" onClick={this.jump.bind(this, 2)}>PK模式</View>
+          <View className="btn" onClick={this.jump.bind(this, 3)}>查看榜单</View>
         </View>
       </View>
     )
