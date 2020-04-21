@@ -9,6 +9,7 @@ import ShareView from '../../components/share_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
 
+
 @inject('questionStore')
 @observer
 class StartPage extends Component {
@@ -26,32 +27,6 @@ class StartPage extends Component {
 
   async componentWillMount () {
     this.initData();
-    this.test();
-  }
-
-  test(){
-    Taro.connectSocket({
-      // url: 'wss://wlwol.cn',
-      url: 'ws://127.0.0.1:5566',
-      success: function () {
-        console.log('connect success')
-      }
-    }).then(task => {
-      task.onOpen(function () {
-        console.log('onOpen')
-        task.send({ data: 'xxx' })
-      })
-      task.onMessage(function (msg) {
-        console.log('onMessage: ', msg)
-        task.close()
-      })
-      task.onError(function () {
-        console.log('onError')
-      })
-      task.onClose(function (e) {
-        console.log('onClose: ', e)
-      })
-    })
   }
 
   async initData(){

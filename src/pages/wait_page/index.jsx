@@ -9,6 +9,9 @@ import ShareView from '../../components/share_view'
 import LoginView from '../../components/login_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
+import listener from "../../core/listener";
+import Message from "../../core/message";
+import client from "../../core/client";
 
 let screenHeight = 300;
 
@@ -20,6 +23,7 @@ class WaitPage extends Component {
     super(props)
     this.state = {
       word: "匹配中",
+      list: []
     }
   }
 
@@ -30,7 +34,77 @@ class WaitPage extends Component {
   async componentWillMount () {
     const { questionStore } = this.props
     // questionStore.initAsync();
+    this.test();
     
+  }
+
+  test(){
+    const { questionStore } = this.props
+    let nickName = questionStore.nickName;
+
+    client.init("http://localhost:8899");
+    client.on(Message.TYPE_CONNECT, () => {
+        client.send(Message.TYPE_LOGIN, { nickName: nickName });
+    });
+    client.on(Message.TYPE_MESSAGE, data => {
+        this.addMessage(data.player.nickName + "：" + data.msg);
+    });
+    client.on(Message.TYPE_LOGIN, data => {
+        this.addMessage("【" + data.nickName + "  （" + data.id + "）进入房间】");
+    });
+    client.on(Message.TYPE_WAIT_MATCH, data => {
+        console.log(Message.TYPE_WAIT_MATCH);
+        console.log(data);
+        this.addMessage("当前玩家个数：" + data.length);
+    })
+    client.on(Message.TYPE_END_MATCH, data => {
+        console.log(Message.TYPE_END_MATCH);
+        console.log(data);
+        this.setState({
+          ready: true
+        })
+        
+        this.addMessage("匹配完成");
+    })
+    client.on(Message.TYPE_EXIT_MATCH, data => {
+        console.log(Message.TYPE_END_MATCH);
+        console.log(data);
+        this.setState({
+          ready: false
+        })
+        
+        this.addMessage(data.nickName + "退出");
+    })
+  }
+
+  say() {
+    if(this.state.ready){
+        this.send("random " + Math.random());
+    }
+    else{
+        this.addMessage("尚未匹配完成");
+    }
+  }
+
+  clear() {
+      this.setState({
+        list: []
+      })
+  }
+
+  send(msg) {
+      client.send(Message.TYPE_MESSAGE, msg);
+  }
+
+  startMatch() {
+      client.send(Message.TYPE_START_MATCH);
+  }
+
+  addMessage(msg){
+    console.log(msg);
+    this.setState({
+      list: [...this.state.list, msg]
+    })
   }
 
   componentWillReact () {
@@ -39,16 +113,7 @@ class WaitPage extends Component {
 
   componentDidMount () {
     console.log('wait componentDidHide', this)
-    // this.props.router.setRouteLeaveHook(
-    //     this.props.routes[1],
-    //     this.routerWillLeave()
-    // )
   }
-
-  // routerWillLeave () {
-  //   console.log("路由跳转==")
-  //   return true;
-  // }
 
   componentWillUnmount () {
     console.log('wait componentWillUnmount', this)
@@ -85,13 +150,29 @@ class WaitPage extends Component {
 
   render () {
     const { questionStore } = this.props
-    let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
     let nickName = questionStore.nickName;
-    let view = <View className='my-tip'>{nickName} ：{this.state.word}</View>
+    let view = <View className='state-tip'>{nickName} ：{this.state.word}</View>
     
     return (
-      <View className='rank-page'>
+      <View className='wait-page'>
         {view}
+        <View className='btn-list'>
+          <View className="btn" onClick={this.clear.bind(this)}>清除</View>
+          <View className="btn" onClick={this.say.bind(this)}>发送</View>
+          <View className="btn" onClick={this.startMatch.bind(this)}>匹配</View>
+        </View>
+        
+        <View className='msg-list'>
+          {
+            this.state.list.map((item, index) => {
+              return (
+                <View key={'k_' + index} className='msg-item'>
+                  <View className='msg'>{item}</View>
+                </View>
+              )
+            })
+          }
+        </View>
       </View>
     )
   }
