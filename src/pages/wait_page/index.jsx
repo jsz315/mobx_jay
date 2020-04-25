@@ -100,6 +100,10 @@ class WaitPage extends Component {
       client.send(Message.TYPE_START_MATCH);
   }
 
+  endMatch(){
+    client.disconnect();
+  }
+
   addMessage(msg){
     console.log(msg);
     this.setState({
@@ -160,6 +164,7 @@ class WaitPage extends Component {
           <View className="btn" onClick={this.clear.bind(this)}>清除</View>
           <View className="btn" onClick={this.say.bind(this)}>发送</View>
           <View className="btn" onClick={this.startMatch.bind(this)}>匹配</View>
+          <View className="btn" onClick={this.endMatch.bind(this)}>退出</View>
         </View>
         
         <View className='msg-list'>
