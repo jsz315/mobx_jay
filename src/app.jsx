@@ -29,6 +29,7 @@ class App extends Component {
       'pages/rank_page/index',
       'pages/question_page/index',
       'pages/wait_page/index',
+      'pages/pk_question_page/index',
     ],
     window: {
       backgroundTextStyle: 'light',

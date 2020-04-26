@@ -54,6 +54,15 @@ const questionStore = observable({
   avatarUrl: global.readData("avatarUrl"),
   gender: global.readData("gender"),
 
+  others: [
+    {
+      openid: '',
+      nickName: '',
+      avatarUrl: '',
+      gender: ''
+    }
+  ],
+
   players: [],
 
   changeShowAd(value){
