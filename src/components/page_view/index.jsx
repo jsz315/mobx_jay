@@ -74,12 +74,6 @@ class PageView extends Component {
         {
           questionStore.popShare && <ShareView questionStore={questionStore}></ShareView>
         }
-        {
-          questionStore.popUpdate && <UpdateView questionStore={questionStore}></UpdateView>
-        }
-        {
-          questionStore.popOver && <OverView questionStore={questionStore}></OverView>
-        }
       </View>
     )
   }

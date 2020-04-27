@@ -103,6 +103,13 @@ class QuestionPage extends Component {
           <QuestionView choose={this.choose.bind(this)} ref='question'></QuestionView>
           {answerView}
         </View>
+        
+        {
+          questionStore.popUpdate && <UpdateView questionStore={questionStore}></UpdateView>
+        }
+        {
+          questionStore.popOver && <OverView questionStore={questionStore}></OverView>
+        }
       </PageView>
     )
   }
