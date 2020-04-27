@@ -11,6 +11,7 @@ function getUserInfo(){
       },
       fail(res) {
         console.log(`getUserInfo 调用失败`);
+        console.log(res)
         resolve(false)
       }
     });
@@ -27,8 +28,9 @@ function authorize(key){
         console.log(res);
         resolve(true)
       },
-      fail(){
+      fail(res){
         console.log(`authorize 调用失败`);
+        console.log(res)
         resolve()
       }
     });
@@ -45,6 +47,7 @@ function login(){
       },
       fail(res) {
         console.log(`login 调用失败`);
+        console.log(res);
         resolve();
       }
     });

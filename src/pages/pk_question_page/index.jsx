@@ -162,15 +162,6 @@ class PkQuestionPage extends Component {
     innerAudioContext.stop();
   }
   
-  goon(){
-    //console.log("parent goon")
-    // this.setState({
-    //   popUpdate: false
-    // })
-    // const { questionStore } = this.props
-    // questionStore.changePopOver(false);
-  }
-
   toggler(){
     const { questionStore } = this.props
     if(innerAudioContext.paused){

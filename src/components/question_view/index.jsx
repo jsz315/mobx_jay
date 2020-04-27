@@ -26,7 +26,6 @@ class QuestionView extends Component {
   constructor(props){
     super(props)
     this.state = {
-      showAnswer: false,
       isRight: false,
       clickId: -1,
       action: 1
@@ -39,8 +38,7 @@ class QuestionView extends Component {
 
   componentWillMount () {
     const { questionStore } = this.props
-    questionStore.initAsync();
-
+    // questionStore.initAsync();
     
     rightSound = Taro.createInnerAudioContext();
     rightSound.autoplay = false;
@@ -102,64 +100,42 @@ class QuestionView extends Component {
     return global.shareData
   }
 
-  choose = (index, level, e) => {
-    const { questionStore } = this.props
-    //console.log(index)
-    //console.log(e)
+  click = (index, level, e) => {
+    // const { questionStore } = this.props
     if(index + 1 == right){
-      //console.log("right");
-      //console.log("wrong");
-      questionStore.doRight();
-      questionStore.addScore(level)
       rightSound.play()
-      this.setState({
-        isRight: true
-      })
     }
     else{
-      //console.log("wrong");
-      questionStore.doWrong();
-      this.setState({
-        isRight: false
-      })
       wrongSound.play()
     }
-    
+
     this.setState({
-      showAnswer: true,
+      isRight: index + 1 == right,
       clickId: index
+    })
+
+    innerAudioContext.stop();
+    this.props.choose(index + 1 == right, level);
+  }
+
+  next(){
+    const { questionStore } = this.props
+    questionStore.next()
+
+    Taro.pageScrollTo({
+      scrollTop: 0
+    })
+
+    this.setState({
+      clickId: -1,
+      action: 2
     })
 
     setTimeout(()=>{
       this.setState({
-        showAnswer: false,
-        clickId: -1
+        action: 1
       })
-
-      if(questionStore.wrong >= 3){
-        console.log("over");
-        questionStore.gameOver();
-      }
-      else{
-        Taro.pageScrollTo({
-          scrollTop: 0
-        })
-        questionStore.next()
-
-        this.setState({
-          action: 2
-        })
-
-        setTimeout(()=>{
-          this.setState({
-            action: 1
-          })
-        }, 600)
-        
-      }
-    }, 2000)
-
-    innerAudioContext.stop();
+    }, 600)
   }
 
   toggler(){
@@ -189,13 +165,12 @@ class QuestionView extends Component {
     const list = [answer1, answer2, answer3, answer4].map((item, index) => {
       let c = String.fromCharCode(65 + index);
       return (
-        <View key={`${c}.${item}`} className={`answer ${this.state.clickId == index ? 'selected' : ''}`} onClick={this.choose.bind(this, index, obj.level)}>{c}. {item}</View>
+        <View key={`${c}.${item}`} className={`answer ${this.state.clickId == index ? 'selected' : ''}`} onClick={this.click.bind(this, index, obj.level)}>{c}. {item}</View>
       )
     })
 
     let mediaView = null;
     let url = global.getUrl(type, file)
-    //console.log('media = ' + url)
     
     if(type == 1){
       mediaView = <Image className='image' mode="widthFix" src={url}></Image>
@@ -203,8 +178,6 @@ class QuestionView extends Component {
     else if(type == 2){
       innerAudioContext.src = url
       console.log("innerAudioContext.volume " + innerAudioContext.volume);
-      // innerAudioContext.obeyMuteSwitch = false;
-
       // Taro.showToast({title: "当前音量：" + innerAudioContext.volume, icon: 'none'})
 
       mediaView = <AudioView volume={innerAudioContext.volume} className='audio' toggler={this.toggler.bind(this)}></AudioView>
@@ -215,38 +188,14 @@ class QuestionView extends Component {
     else{
       mediaView = ''
     }
-  
-
-    let popView = null;
-    //console.log('questionStore.popUpdate = ' + questionStore.popUpdate)
-    if(questionStore.popUpdate){
-      popView = <UpdateView questionStore={questionStore}></UpdateView>
-      questionStore.changeShowAd(true);
-    }
-    else if(questionStore.popOver){
-      popView = <OverView goon={this.goon.bind(this)} questionStore={questionStore}></OverView>
-    }
-    else{
-      popView = <View></View>
-    }
-
-    let answerView = null;
-    if(this.state.showAnswer){
-      //console.log("this.state.isRight = " + this.state.isRight);
-      answerView = <AnswerView isRight={this.state.isRight} questionStore={questionStore}></AnswerView>
-    }
-    else{
-      answerView = <View></View>
-    }
-
-    let showAd = false;
+    
+    // let showAd = false;
     // if(global.platform == 1 && questionStore.showAd){
     //   showAd = true;
     // }
 
     return (
       <View className='question-view'>
-        <StatusView questionStore={questionStore}></StatusView>
         <View className={`move ${this.state.action == 1 ? "moveIn" : "moveOut"}`}>
           <View className='question'>
             <Text>{questionStore.id + 1}. {question}</Text>
@@ -258,19 +207,6 @@ class QuestionView extends Component {
             {list}
           </View>
         </View>
-        {popView}
-        {answerView}
-        {
-          showAd && (
-            <AdView questionStore={questionStore}></AdView>
-          )
-        }
-        {
-          questionStore.popLogin && (
-            <LoginView questionStore={questionStore}></LoginView>
-          )
-        }
-        
       </View>
     )
   }

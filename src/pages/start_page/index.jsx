@@ -6,6 +6,7 @@ import './index.less'
 import AudioView from '../../components/audio_view'
 import VideoView from '../../components/video_view'
 import ShareView from '../../components/share_view'
+import PageView from '../../components/page_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
 
@@ -150,13 +151,15 @@ class StartPage extends Component {
     //<Button className="btn" open-type="contact" onContact={this.bindContact.bind(this)}>联系我们</Button>
 
     return (
-      <View className='start-page'>
-        <View className='btns'>
-          <View className="btn" onClick={this.jump.bind(this, 1)}>开始测试</View>
-          <View className="btn" onClick={this.jump.bind(this, 2)}>PK模式</View>
-          <View className="btn" onClick={this.jump.bind(this, 3)}>查看榜单</View>
+      <PageView>
+        <View className='start-page'>
+          <View className='btns'>
+            <View className="btn" onClick={this.jump.bind(this, 1)}>开始测试</View>
+            <View className="btn" onClick={this.jump.bind(this, 2)}>PK模式</View>
+            <View className="btn" onClick={this.jump.bind(this, 3)}>查看榜单</View>
+          </View>
         </View>
-      </View>
+      </PageView>
     )
   }
 }

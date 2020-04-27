@@ -59,13 +59,14 @@ class LoginView extends Component {
   }
 
   async bindGetUserInfo(e){
+    console.log(e);
+    this.close();
     if(e.detail.userInfo){
       await this.saveUser(e.detail.userInfo);
     }
     else{
       Taro.showToast({title: '无法获取用户数据', icon: 'none'})
     }
-    this.close()
   }
 
   async saveUser(userInfo){
@@ -96,8 +97,9 @@ class LoginView extends Component {
             <Image className='login-avatar' mode='widthFix' src='https://wlwol.cn/asset/img/login-img.png'></Image>
           </View>
           <View className='login-btns'>
-            <View className='login-btn hide' onClick={this.close.bind(this)}>暂不登录</View>
-            <View className='login-btn' onClick={this.login.bind(this)}>立即登录</View>
+            <Button className='login-btn hide' onClick={this.close.bind(this)}>暂不登录</Button>
+            {/* <View className='login-btn' onClick={this.login.bind(this)}>立即登录</View> */}
+            <Button className='login-btn' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
           </View>
         </View>
       </View>

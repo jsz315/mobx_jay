@@ -47,7 +47,7 @@ const questionStore = observable({
   audioPlaying: false,
   audioSrc: null,
   detail: [],
-  showAd: true,
+  showAd: false,
 
   openid: global.readData("openid"),
   nickName: global.readData("nickName"),
@@ -190,6 +190,7 @@ const questionStore = observable({
 
   gameOver(){
     this.popOver = true;
+    console.log("[game over]");
     global.updateScore({
       openid: this.openid,
       score: this.score

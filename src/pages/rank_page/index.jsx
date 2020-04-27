@@ -7,6 +7,7 @@ import AudioView from '../../components/audio_view'
 import VideoView from '../../components/video_view'
 import ShareView from '../../components/share_view'
 import LoginView from '../../components/login_view'
+import PageView from '../../components/page_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
 
@@ -127,56 +128,51 @@ class RankPage extends Component {
       view = <View className='my-tip' onClick={this.getUserInfo.bind(this)}>点击登录查看当前排名</View>
     }
     return (
-      <View className='rank-page'>
-        <View className='my-rank-box'>
-          <View className='my-rank'>
-            <Image className='my-head' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
-            {view}
-            <View className='my-btn' onClick={this.share.bind(this)}>
-              <View className='my-ico'></View>
-              <View className='my-share'>分享</View>
+      <PageView>
+        <View className='rank-page'>
+          <View className='my-rank-box'>
+            <View className='my-rank'>
+              <Image className='my-head' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
+              {view}
+              <View className='my-btn' onClick={this.share.bind(this)}>
+                <View className='my-ico'></View>
+                <View className='my-share'>分享</View>
+              </View>
             </View>
           </View>
-        </View>
+          
+          <View className='rank-roles'>
+            {
+              this.state.ranks.slice(0, 3).map((item, index) => {
+                return (
+                  <View key={item.openid + '_' + index} className={`rank-role num${index + 1}`}>
+                    <Image className='rank-head' src={item.avatarUrl}></Image>
+                    <View className='rank-name'>{item.nickName}</View>
+                    <View className='rank-score'>{item.score}分</View>
+                    <View className={`rank-ico platform${item.platform}`}></View>
+                  </View>
+                )
+              })
+            }
+          </View>
 
-        {questionStore.popShare && <ShareView questionStore={questionStore}></ShareView>}
-
-        <View className='rank-roles'>
-          {
-            this.state.ranks.slice(0, 3).map((item, index) => {
-              return (
-                <View key={item.openid + '_' + index} className={`rank-role num${index + 1}`}>
-                  <Image className='rank-head' src={item.avatarUrl}></Image>
-                  <View className='rank-name'>{item.nickName}</View>
-                  <View className='rank-score'>{item.score}分</View>
-                  <View className={`rank-ico platform${item.platform}`}></View>
-                </View>
-              )
-            })
-          }
+          <View className='rank-list'>
+            {
+              this.state.ranks.slice(3).map((item, index) => {
+                return (
+                  <View key={item.openid + ' ' + index} className='rank-item'>
+                    <View className='rank-num'>{index + 4}</View>
+                    {visibles[index] && <Image className='rank-head' src={item.avatarUrl}></Image>}
+                    <View className='rank-nick'>{item.nickName}</View>
+                    <View className='rank-score'>{item.score || 0}分</View>
+                    <View className={`rank-ico platform${item.platform}`}></View>
+                  </View>
+                );
+              })
+            }
+          </View>
         </View>
-
-        <View className='rank-list'>
-          {
-            this.state.ranks.slice(3).map((item, index) => {
-              return (
-                <View key={item.openid + ' ' + index} className='rank-item'>
-                  <View className='rank-num'>{index + 4}</View>
-                  {visibles[index] && <Image className='rank-head' src={item.avatarUrl}></Image>}
-                  <View className='rank-nick'>{item.nickName}</View>
-                  <View className='rank-score'>{item.score || 0}分</View>
-                  <View className={`rank-ico platform${item.platform}`}></View>
-                </View>
-              );
-            })
-          }
-        </View>
-        {
-          questionStore.popLogin && (
-            <LoginView questionStore={questionStore}></LoginView>
-          )
-        }
-      </View>
+      </PageView>
     )
   }
 }
