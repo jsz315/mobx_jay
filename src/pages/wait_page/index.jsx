@@ -44,7 +44,13 @@ class WaitPage extends Component {
 
     client.init("http://localhost:8899");
     client.on(Message.TYPE_CONNECT, () => {
-        client.send(Message.TYPE_LOGIN, { nickName: nickName });
+        questionStore.changeClientId(client.getId());
+        client.send(Message.TYPE_LOGIN, { 
+          nickName: nickName,
+          avatarUrl: questionStore.avatarUrl,
+          openid: questionStore.openid,
+          gender: questionStore.gender,
+        });
     });
     client.on(Message.TYPE_MESSAGE, data => {
         this.addMessage(data.player.nickName + "：" + data.msg);
@@ -60,12 +66,37 @@ class WaitPage extends Component {
     client.on(Message.TYPE_END_MATCH, data => {
         console.log(Message.TYPE_END_MATCH);
         console.log(data);
+
         this.setState({
           ready: true
         })
-        
+
+        var others = [];
+        data.forEach(item => {
+          if(item.id != questionStore.clientId){
+            others.push({
+              clientId: item.id,
+              openid: item.openid,
+              nickName: item.nickName,
+              avatarUrl: item.avatarUrl,
+              gender: item.gender,
+              score: 0
+            })
+          }
+        })
+        questionStore.changeOthers(others);
         this.addMessage("匹配完成");
+
+        Taro.navigateTo({
+          url: '/pages/pk_question_page/index'
+        })
     })
+
+    client.on(Message.TYPE_LIST_ID, data => {
+      console.log(data);
+      questionStore.changePkList(data);
+    })
+
     client.on(Message.TYPE_EXIT_MATCH, data => {
         console.log(Message.TYPE_END_MATCH);
         console.log(data);
@@ -97,7 +128,13 @@ class WaitPage extends Component {
   }
 
   startMatch() {
+      const { questionStore } = this.props
+
       client.send(Message.TYPE_START_MATCH);
+      client.send(Message.TYPE_LIST_ID, {
+        allSize: questionStore.allQuestion.length,
+        pkSize: 10
+      });
   }
 
   endMatch(){
@@ -136,30 +173,31 @@ class WaitPage extends Component {
     return global.shareData
   }
 
-  onPageScroll(e){ // 滚动事件
-    this.showImg()
-  }
-
-  share(){
-    const { questionStore } = this.props
-    questionStore.changePopShare(true)
-  }
-
-  getUserInfo(e){
-    const { questionStore } = this.props
-    if(!questionStore.nickName){
-      questionStore.changePopLogin(true);
-    }
-  }
-
   render () {
     const { questionStore } = this.props
-    let nickName = questionStore.nickName;
-    let view = <View className='state-tip'>{nickName} ：{this.state.word}</View>
+    if(!questionStore){
+      return <View></View>
+    }
+    let other = questionStore.others[0];
+    if(!other){
+      return <View></View>;
+    }
+
+    let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
+    let nickName = questionStore.nickName || "点击登录账户";
     
     return (
       <View className='wait-page'>
-        {view}
+        <View className='state'>
+          <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
+          <View className='my-name'>{nickName}</View>
+
+          <Image className='other-avatar' src={other.avatarUrl}></Image>
+          <View className='other-name'>{other.nickName}</View>
+        </View>
+
+        <View className='state-tip'>{nickName} ：{this.state.word}</View>
+
         <View className='btn-list'>
           <View className="btn" onClick={this.clear.bind(this)}>清除</View>
           <View className="btn" onClick={this.say.bind(this)}>发送</View>

@@ -44,6 +44,8 @@ class StartPage extends Component {
       }
     }
     console.log('openid = ' + openid);
+
+    await questionStore.initAsync();
   }
 
   saveUser(userInfo){
@@ -106,6 +108,10 @@ class StartPage extends Component {
       Taro.navigateTo({
         url: '/pages/wait_page/index'
       })
+
+      // Taro.navigateTo({
+      //   url: '/pages/pk_question_page/index'
+      // })
     }
     else{
        Taro.navigateTo({

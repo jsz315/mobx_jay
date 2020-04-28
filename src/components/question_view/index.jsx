@@ -26,7 +26,6 @@ class QuestionView extends Component {
   constructor(props){
     super(props)
     this.state = {
-      isRight: false,
       clickId: -1,
       action: 1
     }
@@ -95,27 +94,23 @@ class QuestionView extends Component {
 
   componentDidHide () { }
 
-  onShareAppMessage (option) {
-    // option.from === 'button'
-    return global.shareData
+  click = (index, level, e) => {
+    innerAudioContext.stop();
+    this.props.choose(index, level);
   }
 
-  click = (index, level, e) => {
-    // const { questionStore } = this.props
-    if(index + 1 == right){
-      rightSound.play()
-    }
-    else{
-      wrongSound.play()
-    }
-
+  showChoose(index){
     this.setState({
-      isRight: index + 1 == right,
       clickId: index
     })
+  }
 
-    innerAudioContext.stop();
-    this.props.choose(index + 1 == right, level);
+  playRightSound(){
+    rightSound.play()
+  }
+
+  playWrongSound(){
+    wrongSound.play()
   }
 
   next(){
@@ -154,12 +149,13 @@ class QuestionView extends Component {
 
   render () {
     const { questionStore } = this.props
-    //console.log("questionStore")
-    //console.log(questionStore)
-    if(questionStore.list.length == 0){
+    
+    // const obj = questionStore.list[questionStore.id];
+    const obj = questionStore.getCurQuestion();
+    console.log(obj, '题目数据')
+    if(!obj){
       return <View></View>
     }
-    const obj = questionStore.list[questionStore.id];
     right = obj.right
     const { answer1, answer2, answer3, answer4, question, type, file } = obj
     const list = [answer1, answer2, answer3, answer4].map((item, index) => {

@@ -11,6 +11,10 @@ export default class Message{
     static TYPE_EXIT_MATCH = 'exit match';
 
 
+    static TYPE_LIST_ID = 'list id';
+    static TYPE_CHOOSE_ANSWER = 'choose answer';
+
+
     static TYPE_CONNECT = 'connect';
     static TYPE_DISCONNECT = 'disconnect';
 }

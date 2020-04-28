@@ -6,7 +6,7 @@ import './index.less'
 
 let innerAudioContext;
 
-class AnswerView extends Component {
+class PkAnswerView extends Component {
   constructor(props){
 	  super(props)
     this.state = {
@@ -38,25 +38,43 @@ class AnswerView extends Component {
   
 
   render () {
-    const { questionStore, isRight } = this.props
+    const { questionStore, isRight, isSelf } = this.props
     //console.log('questionStore prop isRight ' + isRight)
-    let tip = null;
+    
+    var tip1 = '';
+    var tip2 = '';
+
     if(isRight){
-      tip = <View className={'title-tip word'}>获得积分 +{questionStore.curLevel.level}</View>
+      if(isSelf){
+        tip1 = '你答对了';
+        tip2 = '你的积分+1';
+      }
+      else{
+        tip1 = '对方答对了';
+        tip2 = '对方积分+1';
+      }
     }
     else{
-      tip = <View className={'title-tip word'}>累计错误 X {questionStore.wrong}</View>
+      if(isSelf){
+        tip1 = '你答错了';
+        tip2 = '对方积分+1';
+      }
+      else{
+        tip1 = '对方答错了';
+        tip2 = '你的积分+1';
+      }
     }
+
     return (
-      <View className='answer-view'>
+      <View className='pk-answer-view'>
         <View className={`answer-box ${isRight ? 'right' : 'wrong'}`}>
           <View className='state'></View>
-          <View className={'state-tip word'}>- {isRight ? '回答正确' : '回答错误'} -</View>
-          {tip}
+          <View className={'state-tip word'}>- {tip2} -</View>
+          <View className={'title-tip word'}>{tip1}</View>
         </View>
       </View>
     )
   }
 }
 
-export default AnswerView 
+export default PkAnswerView 

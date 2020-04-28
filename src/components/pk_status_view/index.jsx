@@ -47,33 +47,27 @@ class PkStatusView extends Component {
 
   render () {
     const { questionStore } = this.props
-    //console.log('questionStore prop')
-    //console.log(questionStore)
     if(!questionStore){
-      //console.log('questionStore not init');
       return <View></View>
     }
-    let ary = ['', 'man', 'woman'];
-    let sex = ary[questionStore.gender];
-    let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
-    let nickName = questionStore.nickName || "点击登录账户";
-
     let other = questionStore.others[0];
     if(!other){
       return <View></View>;
     }
 
-
+    let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
+    let nickName = questionStore.nickName || "点击登录账户";
+    
     return (
       <View className='pk-status-view'>
 
         <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
         <View className='my-name'>{nickName}</View>
-        <View className='my-score'>得分: {questionStore.score}</View>
+        <View className='my-score'>{questionStore.score}</View>
 
         <Image className='other-avatar' src={other.avatarUrl}></Image>
         <View className='other-name'>{other.nickName}</View>
-        <View className='other-score'>得分: {other.score}</View>
+        <View className='other-score'>{other.score}</View>
        
       </View>
     )

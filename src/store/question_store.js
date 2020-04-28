@@ -49,6 +49,12 @@ const questionStore = observable({
   detail: [],
   showAd: false,
 
+  allQuestion: [],
+  pkList: [],
+  pkId: 0,
+  isPk: false,
+  clientId: '',
+
   openid: global.readData("openid"),
   nickName: global.readData("nickName"),
   avatarUrl: global.readData("avatarUrl"),
@@ -56,14 +62,37 @@ const questionStore = observable({
 
   others: [
     {
+      clientId: '',
       openid: '',
-      nickName: '',
-      avatarUrl: '',
-      gender: ''
+      nickName: 'jay chou',
+      avatarUrl: 'https://wlwol.cn/asset/img/boy.jpg',
+      gender: '',
+      score: 0
     }
   ],
 
   players: [],
+
+  changeOthers(value){
+    this.others = value;
+  },
+
+  changeClientId(value){
+    this.clientId = value;
+  },
+
+  changeIsPk(value){
+    this.isPk = value
+  },
+
+  changePkId(value){
+    this.pkId = value
+  },
+
+  changePkList(value){
+    this.pkList = value;
+  },
+  
 
   changeShowAd(value){
     this.showAd = value
@@ -115,34 +144,55 @@ const questionStore = observable({
   },
 
   next() {
-    if(this.id == this.list.length - 1){
-      if(levelId < levels.length - 1){
-        //console.log('level update')
-        ++levelId;
-        this.initLevel();
+    if(this.isPk){
+      if(this.pkId == this.pkList.length - 1){
+        this.gameOver();
       }
       else{
-        //console.log('game over')
-        this.gameOver();
+        this.pkId++;
       }
     }
     else{
-      this.id++;
+      if(this.id == this.list.length - 1){
+        if(levelId < levels.length - 1){
+          ++levelId;
+          this.initLevel();
+        }
+        else{
+          this.gameOver();
+        }
+      }
+      else{
+        this.id++;
+      }
     }
   },
 
-  initLevel(){
+  initLevelData(){
+    levelId = 0;
     this.curLevel = levels[levelId];
     let tempList = this.filter(this.curLevel.list);
     this.list =  tooler.randomList(tempList, 10);
     this.levelName = this.curLevel.name;
     this.id = 0;
-    //console.log(this.levelName)
     this.popUpdate = true;
     this.detail[levelId].lock = false;
     setTimeout(() => {
       this.popUpdate = false
     }, 2000);
+  },
+
+  initPkData(){
+    
+  },
+
+  getCurQuestion(){
+    if(this.isPk){
+      var id = this.pkList[this.pkId];
+      return this.allQuestion[id];
+    }
+    
+    return this.list[this.id];
   },
 
   filter(list){
@@ -181,26 +231,25 @@ const questionStore = observable({
   doWrong(){
     this.wrong++;
     this.detail[levelId].wrong += 1;
-    // if(this.wrong >= 3){
-    //   setTimeout(()=>{
-    //     this.gameOver();
-    //   }, 2400)
-    // }
   },
 
   gameOver(){
     this.popOver = true;
-    console.log("[game over]");
     global.updateScore({
       openid: this.openid,
       score: this.score
     })
   },
 
-  addScore(n){
-    //console.log('add score ' + n);
-    this.score += n;
-    this.detail[levelId].score += n;
+  addScore(n, isOther = false){
+    if(isOther){
+      this.others[0].score += n;
+    }
+    else{
+      this.score += n;
+      this.detail[levelId].score += n;
+    }
+    
   },
 
   addTime(n){
@@ -208,7 +257,6 @@ const questionStore = observable({
   },
 
   async initAsync() {
-    //console.log('initAsync')
     let detail = [];
     let res = await global.getAllQuestion();
     levels.forEach(element => {
@@ -227,15 +275,12 @@ const questionStore = observable({
 
     res.data.forEach((element, index) => {
       let id = element.level - 1;
-
       if(id < levels.length){
         levels[id].list.push(element);
       }
     });
 
-    //console.log(levels);
-    levelId = 0;
-    this.initLevel();
+    this.allQuestion = res.data;  
   }
 })
 export default questionStore

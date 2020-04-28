@@ -35,7 +35,9 @@ class QuestionPage extends Component {
 
   async componentWillMount () {
     const { questionStore } = this.props
-    await questionStore.initAsync();
+    questionStore.changeIsPk(false);
+    questionStore.initLevelData();
+    // await questionStore.initAsync();
   }
 
   componentWillReact () {
@@ -55,19 +57,27 @@ class QuestionPage extends Component {
     return global.shareData
   }
 
-  choose = (isRight, level) => {
+  choose = (index, level) => {
     const { questionStore } = this.props
+    const obj = questionStore.getCurQuestion();
+
+    var isRight = obj.right == index + 1;
+
     this.setState({
       showAnswer: true,
       isRight: isRight
     })
 
+    this.refs.question.showChoose(index);
+
     if(isRight){
       questionStore.doRight()
       questionStore.addScore(level)
+      this.refs.question.playRightSound()
     }
     else{
       questionStore.doWrong()
+      this.refs.question.playWrongSound()
     }
     
     setTimeout(()=>{
@@ -103,6 +113,12 @@ class QuestionPage extends Component {
           <QuestionView choose={this.choose.bind(this)} ref='question'></QuestionView>
           {answerView}
         </View>
+        {
+          questionStore.popUpdate && <UpdateView questionStore={questionStore}></UpdateView>
+        }
+        {
+          questionStore.popOver && <OverView questionStore={questionStore}></OverView>
+        }
       </PageView>
     )
   }

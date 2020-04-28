@@ -5,6 +5,7 @@ var socket;
 
 function init(url){
     socket = io(url);
+    console.log(socket, 'socket');
     console.log(socket, window);
     setTimeout(()=>{
       console.log('timer start');
@@ -23,7 +24,6 @@ function on(type, callback){
 }
 
 function disconnect(){
-  console.log('ccc', socket);
   try{
     socket.destroy();
   }
@@ -31,12 +31,16 @@ function disconnect(){
     console.log("-----")
     console.log(e);
   }
-  // socket.close();
+}
+
+function getId(){
+  return socket.id;
 }
 
 export default {
     init,
     send,
     on,
-    disconnect
+    disconnect,
+    getId
 }
