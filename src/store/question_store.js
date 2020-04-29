@@ -64,8 +64,8 @@ const questionStore = observable({
     {
       clientId: '',
       openid: '',
-      nickName: 'jay chou',
-      avatarUrl: 'https://wlwol.cn/asset/img/boy.jpg',
+      nickName: '',
+      avatarUrl: '',
       gender: '',
       score: 0
     }
@@ -119,12 +119,24 @@ const questionStore = observable({
     this.level = 1;
     this.right = 0;
     this.wrong = 0;
+    this.pkId = 0;
+    this.isPk = false;
     this.detail.forEach(item => {
       item.score = 0;
       item.wrong = 0;
       item.right = 0;
       item.lock = true;
     })
+    this.others = [
+      {
+        clientId: '',
+        openid: '',
+        nickName: '',
+        avatarUrl: '',
+        gender: '',
+        score: 0
+      }
+    ];
   },
 
   addPlay(){
@@ -144,8 +156,9 @@ const questionStore = observable({
   },
 
   next() {
+    console.log("next", Math.random());
     if(this.isPk){
-      if(this.pkId == this.pkList.length - 1){
+      if(this.pkId >= this.pkList.length - 1){
         this.gameOver();
       }
       else{
@@ -153,7 +166,7 @@ const questionStore = observable({
       }
     }
     else{
-      if(this.id == this.list.length - 1){
+      if(this.id >= this.list.length - 1){
         if(levelId < levels.length - 1){
           ++levelId;
           this.initLevel();

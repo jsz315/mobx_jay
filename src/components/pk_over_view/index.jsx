@@ -48,8 +48,8 @@ class PkOverView extends Component {
   goon(){
     //console.log("son goon")
     // this.props.goon();
-    Taro.navigateTo({
-      url: '/pages/rank_page/index'
+    Taro.reLaunch({
+      url: '/pages/start_page/index'
     })
   }
 
@@ -91,7 +91,7 @@ class PkOverView extends Component {
           
           <View className='btns'>
             <View className='btn' onClick={this.share.bind(this)}>分享</View>
-            <View className='btn' onClick={this.goon.bind(this)}>排名</View>
+            <View className='btn' onClick={this.goon.bind(this)}>返回</View>
           </View>
         </View>
 

@@ -99,7 +99,7 @@ class OverView extends Component {
           
           <View className='btns'>
             <View className='btn' onClick={this.share.bind(this)}>分享</View>
-            <View className='btn' onClick={this.goon.bind(this)}>排名</View>
+            <View className='btn' onClick={this.goon.bind(this)}>榜单</View>
           </View>
         </View>
 

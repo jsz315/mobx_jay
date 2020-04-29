@@ -134,6 +134,9 @@ class PkQuestionPage extends Component {
       // }
 
       this.refs.question.next();
+      if(questionStore.popOver){
+        console.log("over ===")
+      }
 
     }, 2000)
   }

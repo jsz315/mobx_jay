@@ -152,7 +152,9 @@ class QuestionView extends Component {
     
     // const obj = questionStore.list[questionStore.id];
     const obj = questionStore.getCurQuestion();
-    console.log(obj, '题目数据')
+    let qid = questionStore.isPk ? questionStore.pkId : questionStore.id;
+
+    console.log(obj, '题目数据', Math.random())
     if(!obj){
       return <View></View>
     }
@@ -194,7 +196,7 @@ class QuestionView extends Component {
       <View className='question-view'>
         <View className={`move ${this.state.action == 1 ? "moveIn" : "moveOut"}`}>
           <View className='question'>
-            <Text>{questionStore.id + 1}. {question}</Text>
+            <Text>{qid + 1}. {question}</Text>
             <View className='media'>
               {mediaView}
             </View>

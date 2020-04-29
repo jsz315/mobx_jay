@@ -12,6 +12,7 @@ import global from '../../core/global'
 import listener from "../../core/listener";
 import Message from "../../core/message";
 import client from "../../core/client";
+import PageView from '../../components/page_view'
 
 let screenHeight = 300;
 
@@ -50,6 +51,7 @@ class WaitPage extends Component {
           openid: questionStore.openid,
           gender: questionStore.gender,
         });
+        this.startMatch();
     });
     client.on(Message.TYPE_MESSAGE, data => {
         this.addMessage(data.player.nickName + "：" + data.msg);
@@ -86,9 +88,13 @@ class WaitPage extends Component {
         questionStore.changeOthers(others);
         this.addMessage("匹配完成");
 
-        Taro.navigateTo({
-          url: '/pages/pk_question_page/index'
-        })
+        setTimeout(()=>{
+          Taro.navigateTo({
+            url: '/pages/pk_question_page/index'
+          })
+        }, 4000);
+
+        
     })
 
     client.on(Message.TYPE_LIST_ID, data => {
@@ -140,6 +146,14 @@ class WaitPage extends Component {
     client.disconnect();
   }
 
+  getUserInfo(){
+    console.log('getUserInfo')
+    const { questionStore } = this.props
+    if(!questionStore.nickName){
+      questionStore.changePopLogin(true);
+    }
+  }
+
   addMessage(msg){
     console.log(msg);
     this.setState({
@@ -184,38 +198,47 @@ class WaitPage extends Component {
 
     let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
     let nickName = questionStore.nickName || "点击登录账户";
+
+    let otherAvatarUrl = other.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
+    let otherNickName = other.nickName || "匹配中";
     
     return (
-      <View className='wait-page'>
-        <View className='state'>
-          <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
-          <View className='my-name'>{nickName}</View>
+      <PageView>
+        <View className='wait-page'>
+          <View className='state'>
+            <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
+            <View className='my-name' onClick={this.getUserInfo.bind(this)}>{nickName}</View>
 
-          <Image className='other-avatar' src={other.avatarUrl}></Image>
-          <View className='other-name'>{other.nickName}</View>
-        </View>
+            <View className='vs'></View>
 
-        <View className='state-tip'>{nickName} ：{this.state.word}</View>
+            <Image className='other-avatar' src={otherAvatarUrl}></Image>
+            <View className='other-name'>{otherNickName}</View>
+          </View>
 
-        <View className='btn-list'>
-          <View className="btn" onClick={this.clear.bind(this)}>清除</View>
-          <View className="btn" onClick={this.say.bind(this)}>发送</View>
-          <View className="btn" onClick={this.startMatch.bind(this)}>匹配</View>
-          <View className="btn" onClick={this.endMatch.bind(this)}>退出</View>
+          <View className='debug'>
+            <View className='state-tip'>{nickName} ：{this.state.word}</View>
+
+            <View className='btn-list'>
+              <View className="btn" onClick={this.clear.bind(this)}>清除</View>
+              <View className="btn" onClick={this.say.bind(this)}>发送</View>
+              <View className="btn" onClick={this.startMatch.bind(this)}>匹配</View>
+              <View className="btn" onClick={this.endMatch.bind(this)}>退出</View>
+            </View>
+            
+            <View className='msg-list'>
+              {
+                this.state.list.map((item, index) => {
+                  return (
+                    <View key={'k_' + index} className='msg-item'>
+                      <View className='msg'>{item}</View>
+                    </View>
+                  )
+                })
+              }
+            </View>
+          </View>
         </View>
-        
-        <View className='msg-list'>
-          {
-            this.state.list.map((item, index) => {
-              return (
-                <View key={'k_' + index} className='msg-item'>
-                  <View className='msg'>{item}</View>
-                </View>
-              )
-            })
-          }
-        </View>
-      </View>
+      </PageView>
     )
   }
 }
