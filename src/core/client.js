@@ -31,6 +31,7 @@ function disconnect(){
     console.log("-----")
     console.log(e);
   }
+  console.log('disconnect socket');
 }
 
 function getId(){

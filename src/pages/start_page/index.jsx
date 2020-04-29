@@ -82,7 +82,6 @@ class StartPage extends Component {
   }
 
   componentDidHide () {
-    
     console.log('start componentDidHide', this)
   }
 

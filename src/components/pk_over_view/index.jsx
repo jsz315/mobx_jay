@@ -65,37 +65,29 @@ class PkOverView extends Component {
       return <View></View>
     }
 
+    let other = questionStore.others[0];
+    if(!other){
+      return <View></View>;
+    }
+    let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
+    let nickName = questionStore.nickName || "点击登录账户";
+
     return (
       <View className='pk-over-view'>
         <View className='pop-box'>
           <View className='pop-title'>
             <View className='title-tip'>
-            杰迷成绩单
+            PK成绩单
             </View>
           </View>
 
-          <View className='row-box row-head'>
-            <View className='row-name'>难度</View>
-            <View className='row-right'>答对</View>
-            <View className='row-score'>得分</View>
-          </View>
-          {
-            questionStore.detail.map((item, index) => {
-              return (
-                <View className='row-box' key={index}>
-                  <View className='row-name'>{item.name}</View>
-                  <View className='row-right'>{item.right}</View>
-                  <View className='row-score'>{item.score}</View>
-                </View>
-              );
-            })
-          }
-          <View className='row-total'>
-            总成绩：
-            <View className='total-score'>{questionStore.score}</View>
-          </View>
+          <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
+          <View className='my-name'>{nickName}</View>
+          <View className='my-score'>{questionStore.score}</View>
 
-          <View className='score-type'>{questionStore.curLevel.name}杰迷</View>
+          <Image className='other-avatar' src={other.avatarUrl}></Image>
+          <View className='other-name'>{other.nickName}</View>
+          <View className='other-score'>{other.score}</View>
           
           <View className='btns'>
             <View className='btn' onClick={this.share.bind(this)}>分享</View>

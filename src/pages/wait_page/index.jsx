@@ -34,11 +34,10 @@ class WaitPage extends Component {
   async componentWillMount () {
     const { questionStore } = this.props
     // questionStore.initAsync();
-    this.test();
-    
+    this.conn();
   }
 
-  test(){
+  conn(){
     const { questionStore } = this.props
     let nickName = questionStore.nickName;
 
@@ -133,7 +132,7 @@ class WaitPage extends Component {
       client.send(Message.TYPE_START_MATCH);
       client.send(Message.TYPE_LIST_ID, {
         allSize: questionStore.allQuestion.length,
-        pkSize: 10
+        pkSize: 4
       });
   }
 

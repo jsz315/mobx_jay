@@ -58,7 +58,9 @@ class PkQuestionPage extends Component {
     })
   }
 
-  componentWillUnmount () { }
+  componentWillUnmount () {
+    client.disconnect();
+  }
 
   componentDidShow () { }
 
@@ -123,13 +125,16 @@ class PkQuestionPage extends Component {
         showAnswer: false,
       })
 
-      if(questionStore.wrong >= 3){
-        console.log("over");
-        questionStore.gameOver();
-      }
-      else{
-        this.refs.question.next();
-      }
+      // if(questionStore.wrong >= 3){
+      //   console.log("over");
+      //   questionStore.gameOver();
+      // }
+      // else{
+      //   this.refs.question.next();
+      // }
+
+      this.refs.question.next();
+
     }, 2000)
   }
 

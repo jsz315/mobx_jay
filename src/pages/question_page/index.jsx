@@ -113,10 +113,6 @@ class QuestionPage extends Component {
           <QuestionView choose={this.choose.bind(this)} ref='question'></QuestionView>
           {answerView}
         </View>
-<<<<<<< HEAD
-=======
-        
->>>>>>> 8548137b374497811a827d1ced78bc5e607d0f89
         {
           questionStore.popUpdate && <UpdateView questionStore={questionStore}></UpdateView>
         }

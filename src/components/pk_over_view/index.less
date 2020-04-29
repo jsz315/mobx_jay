@@ -43,74 +43,61 @@
           color: #d82607;
         }
       }
-      .row-box{
-        display: flex;
-        padding: 20px 80px;
-        justify-content: center;
-        align-items: center;
-        font-size: 32px;
-        color: #999999;
-        .row-name{
-          width: 100px;
-          text-align: center;
-        }
-        .row-right{
-          width: 60px;
-          color: #d82607;
-          flex: 1;
-          text-align: center;
-        }
-        .row-score{
-          width: 100px;
-          color: #11a6fc;
-          text-align: center;
-        }
-        &.row-head{
-          .row-name{
-            color: #3b3b3b;
-          }
-          .row-right{
-            color: #3b3b3b;
-          }
-          .row-score{
-            color: #3b3b3b;
-          }
-        }
-      }
-      .row-total{
-        display: flex;
-        padding: 40px 80px 30px;
-        justify-content: center;
-        align-items: center;
-        font-size: 32px;
-        width: 320px;
-        margin: 20px auto;
-        color: #999999;
-        border-top: solid 4px #11a6fc;
-        .total-score{
-          font-size: 48px;
-          color: #11a6fc;
-        }
-      }
-      .score-type{
-        font-size: 60px;
-        color: #d82607;
-        padding: 30px;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        border: solid 8px #d82607;
+      .my-avatar{
         position: absolute;
-        bottom: 220px;
-        right: 20px;
-        text-align: center;
-        opacity: 0;
-        transform: scale(7) rotate(-30deg);
-        animation: scoreMove 300ms;
-        animation-fill-mode: forwards;
-        animation-delay: 2100ms;
-        z-index: 1;
-        pointer-events: none;
+        left: 30px;
+        top: 20px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: solid 4px rgba(255, 255, 255, 0.5);
+      }
+      .my-name{
+        position: absolute;
+        left: 130px;
+        top: 40px;
+        width: 160px;
+        text-align: left;
+        background: #699eff;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .my-score{
+        position: absolute;
+        left: 280px;
+        top: 70px;
+        font-size: 30px;
+        text-align: left;
+      }
+      .other-avatar{
+        position: absolute;
+        right: 30px;
+        top: 20px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: solid 4px rgba(255, 255, 255, 0.5);
+      }
+      .other-name{
+        position: absolute;
+        right: 130px;
+        top: 40px;
+        width: 160px;
+        text-align: right;
+        background: #699eff;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .other-score{
+        position: absolute;
+        right: 280px;
+        top: 70px;
+        font-size: 30px;
+        text-align: right;
       }
       .btns{
         position: absolute;
