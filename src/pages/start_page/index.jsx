@@ -27,7 +27,7 @@ class StartPage extends Component {
   }
 
   async componentWillMount () {
-    this.initData();
+    // this.initData();
   }
 
   async initData(){
@@ -71,6 +71,7 @@ class StartPage extends Component {
 
   componentDidMount () {
     console.log('start componentDidMount', this)
+    this.initData();
   }
 
   componentWillUnmount () { 
