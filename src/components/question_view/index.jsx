@@ -38,6 +38,11 @@ class QuestionView extends Component {
   componentWillMount () {
     const { questionStore } = this.props
     // questionStore.initAsync();
+
+    if(process.env.TARO_ENV === 'h5'){
+        console.log("测试版本不播放音频");
+        return;
+    }
     
     rightSound = Taro.createInnerAudioContext();
     rightSound.autoplay = false;

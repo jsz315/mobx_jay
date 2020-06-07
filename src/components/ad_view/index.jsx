@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Progress, Ad } from '@tarojs/components'
+import { View, Button, Text, Progress } from '@tarojs/components'
+// import { View, Button, Text, Progress, Ad } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 
 import './index.less'
@@ -71,13 +72,13 @@ class AdView extends Component {
 
     return (
       <View className='ad-view'>
-          <Ad
+          {/* <Ad
             unit-id='ci3fkkbfado53fcek6'
             ad-intervals={30}
             onLoad={this.adLoad.bind(this)}
             onError={this.adError.bind(this)}
             onClose={this.adClose.bind(this)}
-          />
+          /> */}
       </View>
     )
   }

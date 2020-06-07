@@ -131,7 +131,7 @@ const questionStore = observable({
       item.score = 0;
       item.wrong = 0;
       item.right = 0;
-      item.lock = true;
+    //   item.lock = true;
     })
     this.others = [
       {
@@ -195,7 +195,7 @@ const questionStore = observable({
     this.levelName = this.curLevel.name;
     this.id = 0;
     this.popUpdate = true;
-    this.detail[levelId].lock = false;
+    // this.detail[levelId].lock = false;
     setTimeout(() => {
       this.popUpdate = false
     }, 2000);
@@ -286,7 +286,7 @@ const questionStore = observable({
         score: 0,
         wrong: 0,
         right: 0,
-        lock: true
+        // lock: true
       })
     })
 

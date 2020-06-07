@@ -14,6 +14,18 @@ const shareData = {
   }
 }
 
+const h5Debug = {
+    "nickName":"王小峰",
+    "gender":1,
+    "language":"zh_CN",
+    "city":"Hangzhou",
+    "province":"Zhejiang",
+    "country":"China",
+    "avatarUrl":"https://wx.qlogo.cn/mmopen/vi_32/DHWgKy6wNsEOTqenta2SGQk8suNl6sfmu2LBBfPhzicGBCPrtEWboiaL0NJyhicm8hPS0wzyy2yN1k35OWDB7cWPw/132",
+    "openid":"openid5BBvPjJJ5lSF4C-000000",
+    "code":"codesPIlU0Pwdy22F9Kz22000000"
+}
+
 let filterData = {
   weapp: false,
   tt: false,
@@ -67,6 +79,8 @@ function getPlatform(){
     platform = 1;
   } else if (process.env.TARO_ENV === 'qq') {
     platform = 2;
+  } else if (process.env.TARO_ENV === 'h5') {
+    platform = 3;
   }
   console.log(`当前平台：${process.env.TARO_ENV} = ${platform}`);
   return platform;
@@ -78,9 +92,12 @@ async function initShare(){
   });
   if(res.data){
     let obj = res.data[process.env.TARO_ENV];
-    shareData.title = obj.title;
-    shareData.desc = obj.desc;
-    shareData.imageUrl = obj.imageUrl;
+    if(obj){
+        shareData.title = obj.title;
+        shareData.desc = obj.desc;
+        shareData.imageUrl = obj.imageUrl;
+    }
+    
   }
 }
 
@@ -112,6 +129,8 @@ function getOpenid(code){
     return httpRequest(host + '/qq/login', 'GET', {
       code: code
     });
+  } else if (process.env.TARO_ENV === 'h5') {
+      return Promise.resolve({data: {openid: h5Debug.openid}});
   }
 }
 
@@ -153,12 +172,6 @@ function getMyRank(openid){
   });
 }
 
-function getMyRank(openid){
-  return httpRequest(host + '/yun/user/myRank', 'POST', {
-    openid: openid
-  });
-}
-
 function readData(key){
   return Taro.getStorageSync(key)
 }
@@ -184,5 +197,6 @@ export default {
   getAllQuestion,
   shareData,
   platform,
-  isFilter
+  isFilter,
+  h5Debug
 }
