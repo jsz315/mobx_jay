@@ -10,7 +10,7 @@ let innerAudioContext;
 
 @inject('questionStore')
 @observer
-class PkOverView extends Component {
+class PkQuitView extends Component {
   constructor(props){
 	  super(props)
     this.state = {
@@ -72,38 +72,23 @@ class PkOverView extends Component {
     let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
     let nickName = questionStore.nickName || "点击登录账户";
 
-    let tip = '挑战成功'
+    let tip = '对手' + other.nickName + '落荒而逃'
     let rs = 'win'
     let player1, player2;
-    if(other.score > questionStore.score){
-      tip = '挑战失败'
-      rs = "lost"
-      player1 = {
-        avatarUrl: other.avatarUrl,
-        nickName: other.nickName,
-        score: other.score
-      };
-      player2 = {
-        avatarUrl: avatarUrl,
-        nickName: nickName,
-        score: questionStore.score
-      }
-    }
-    else{
-      player1 = {
-        avatarUrl: avatarUrl,
-        nickName: nickName,
-        score: questionStore.score
-      };
-      player2 = {
-        avatarUrl: other.avatarUrl,
-        nickName: other.nickName,
-        score: other.score
-      }
+    
+    player1 = {
+      avatarUrl: avatarUrl,
+      nickName: nickName,
+      score: questionStore.score
+    };
+    player2 = {
+      avatarUrl: other.avatarUrl,
+      nickName: other.nickName,
+      score: other.score
     }
 
     return (
-      <View className='pk-over-view'>
+      <View className='pk-quit-view'>
         <View className='pop-box'>
           <View className='state-tip'>{tip}</View>
           <View className={`state-face ${rs}`}></View>
@@ -114,7 +99,7 @@ class PkOverView extends Component {
 
           <Image className='other-avatar' src={player2.avatarUrl}></Image>
           <View className='other-name'>{player2.nickName}</View>
-          <View className='other-score'>{player2.score}分</View>
+          <View className='other-score'>逃跑</View>
           
           <View className='btns'>
             <View className='btn' onClick={this.share.bind(this)}>分享</View>
@@ -128,4 +113,4 @@ class PkOverView extends Component {
   }
 }
 
-export default PkOverView 
+export default PkQuitView 

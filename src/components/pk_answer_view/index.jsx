@@ -69,8 +69,8 @@ class PkAnswerView extends Component {
       <View className='pk-answer-view'>
         <View className={`answer-box ${isRight ? 'right' : 'wrong'}`}>
           <View className='state'></View>
-          <View className={'state-tip word'}>- {tip2} -</View>
-          <View className={'title-tip word'}>{tip1}</View>
+          <View className={'state-tip word'}>{tip1}</View>
+          <View className={'title-tip word'}>{tip2}</View>
         </View>
       </View>
     )

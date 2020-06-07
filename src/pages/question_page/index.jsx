@@ -15,6 +15,7 @@ import PageView from '../../components/page_view'
 import QuestionView from '../../components/question_view'
 import AdView from '../../components/ad_view'
 import global from '../../core/global'
+import pagePath from '../../core/pagePath'
 
 
 @inject('questionStore')
@@ -48,7 +49,10 @@ class QuestionPage extends Component {
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    pagePath.push("question");
+    console.log(pagePath.path, "page path");
+  }
 
   componentDidHide () { }
 

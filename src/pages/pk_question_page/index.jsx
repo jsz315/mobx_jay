@@ -12,11 +12,13 @@ import PageView from '../../components/page_view'
 import PkAnswerView from '../../components/pk_answer_view'
 import LoginView from '../../components/login_view'
 import QuestionView from '../../components/question_view'
+import PkQuitView from '../../components/pk_quit_view'
 import ShareView from '../../components/share_view'
 import AdView from '../../components/ad_view'
 import global from '../../core/global'
 import client from "../../core/client";
 import Message from "../../core/message";
+import pagePath from '../../core/pagePath'
 
 let right = 0;
 let innerAudioContext = null;
@@ -53,8 +55,19 @@ class PkQuestionPage extends Component {
   }
 
   componentDidMount () {
+    const { questionStore } = this.props
     client.on(Message.TYPE_CHOOSE_ANSWER, data => {
       this.serveChoose(data);
+    })
+
+    client.on(Message.TYPE_EXIT_MATCH, data => {
+      console.log(data, '退出')
+      console.log(data.nickName, '退出');
+      questionStore.changePopQuit(true);
+    })
+
+    client.on(Message.TYPE_DISCONNECT, data=>{
+      console.log(data, '断开网络');
     })
   }
 
@@ -62,7 +75,10 @@ class PkQuestionPage extends Component {
     client.disconnect();
   }
 
-  componentDidShow () { }
+  componentDidShow () {
+    pagePath.push("pk_question");
+    console.log(pagePath.path, "page path");
+  }
 
   componentDidHide () { }
 
@@ -136,6 +152,7 @@ class PkQuestionPage extends Component {
       this.refs.question.next();
       if(questionStore.popOver){
         console.log("over ===")
+        client.disconnect();
       }
 
     }, 2000)
@@ -162,6 +179,9 @@ class PkQuestionPage extends Component {
         </View>
         {
           questionStore.popOver && <PkOverView questionStore={questionStore}></PkOverView>
+        }
+        {
+          questionStore.popQuit && <PkQuitView questionStore={questionStore}></PkQuitView>
         }
       </PageView>
     )

@@ -63,11 +63,11 @@ class PkStatusView extends Component {
 
         <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
         <View className='my-name'>{nickName}</View>
-        <View className='my-score'>{questionStore.score}</View>
+        <View className='my-score'>当前得分:{questionStore.score}</View>
 
         <Image className='other-avatar' src={other.avatarUrl}></Image>
         <View className='other-name'>{other.nickName}</View>
-        <View className='other-score'>{other.score}</View>
+        <View className='other-score'>当前得分:{other.score}</View>
        
       </View>
     )

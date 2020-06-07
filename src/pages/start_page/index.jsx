@@ -9,7 +9,9 @@ import ShareView from '../../components/share_view'
 import PageView from '../../components/page_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
+import client from "../../core/client";
 
+import pagePath from '../../core/pagePath'
 
 @inject('questionStore')
 @observer
@@ -78,7 +80,12 @@ class StartPage extends Component {
   }
 
   componentDidShow () {
-    console.log('start componentDidShow', this)
+    pagePath.push("start");
+    console.log(pagePath.path, "page path");
+    client.disconnect();
+    // if(pagePath.prev() == 'wait'){
+    //   client.disconnect();
+    // }
   }
 
   componentDidHide () {

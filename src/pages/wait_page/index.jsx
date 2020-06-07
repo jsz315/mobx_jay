@@ -13,8 +13,10 @@ import listener from "../../core/listener";
 import Message from "../../core/message";
 import client from "../../core/client";
 import PageView from '../../components/page_view'
+import pagePath from '../../core/pagePath'
 
 let screenHeight = 300;
+let pkSize = 9;
 
 @inject('questionStore')
 @observer
@@ -42,7 +44,8 @@ class WaitPage extends Component {
     const { questionStore } = this.props
     let nickName = questionStore.nickName;
 
-    client.init("http://localhost:8899");
+    // client.init("http://localhost:7788");
+    client.init("https://wlwol.cn");
     client.on(Message.TYPE_CONNECT, () => {
         questionStore.changeClientId(client.getId());
         client.send(Message.TYPE_LOGIN, { 
@@ -89,10 +92,10 @@ class WaitPage extends Component {
         this.addMessage("匹配完成");
 
         setTimeout(()=>{
-          Taro.navigateTo({
+          Taro.redirectTo({
             url: '/pages/pk_question_page/index'
           })
-        }, 4000);
+        }, 40);
 
         
     })
@@ -138,7 +141,7 @@ class WaitPage extends Component {
       client.send(Message.TYPE_START_MATCH);
       client.send(Message.TYPE_LIST_ID, {
         allSize: questionStore.allQuestion.length,
-        pkSize: 4
+        pkSize: pkSize
       });
   }
 
@@ -165,6 +168,11 @@ class WaitPage extends Component {
     //console.log('componentWillReact')
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log('componentWillReceiveProps');
+    console.log(nextProps, this.props);
+  }
+
   componentDidMount () {
     console.log('wait componentDidHide', this)
   }
@@ -174,7 +182,8 @@ class WaitPage extends Component {
   }
 
   componentDidShow () {
-    console.log('wait componentDidShow', this)
+    pagePath.push("wait");
+    console.log(pagePath.path, "page path");
   }
 
   componentDidHide () {
@@ -199,7 +208,7 @@ class WaitPage extends Component {
     let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
     let nickName = questionStore.nickName || "点击登录账户";
 
-    let otherAvatarUrl = other.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
+    let otherAvatarUrl = other.avatarUrl || "https://wlwol.cn/asset/img/loading.gif";
     let otherNickName = other.nickName || "匹配中";
     
     return (
@@ -208,8 +217,6 @@ class WaitPage extends Component {
           <View className='state'>
             <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
             <View className='my-name' onClick={this.getUserInfo.bind(this)}>{nickName}</View>
-
-            <View className='vs'></View>
 
             <Image className='other-avatar' src={otherAvatarUrl}></Image>
             <View className='other-name'>{otherNickName}</View>

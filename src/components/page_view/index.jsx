@@ -9,6 +9,7 @@ import UpdateView from '../../components/update_view'
 import OverView from '../../components/over_view'
 import AdView from '../../components/ad_view'
 
+
 @inject('questionStore')
 @observer
 class PageView extends Component {
@@ -37,7 +38,8 @@ class PageView extends Component {
     
   }
 
-  componentDidShow () { }
+  componentDidShow () {
+  }
 
   componentDidHide () { }
 

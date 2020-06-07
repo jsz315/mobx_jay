@@ -10,6 +10,7 @@ import LoginView from '../../components/login_view'
 import PageView from '../../components/page_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
+import pagePath from '../../core/pagePath'
 
 let screenHeight = 300;
 
@@ -74,7 +75,10 @@ class RankPage extends Component {
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    pagePath.push("rank");
+    console.log(pagePath.path, "page path");
+  }
 
   componentDidHide () { }
 

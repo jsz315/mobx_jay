@@ -53,6 +53,7 @@ const questionStore = observable({
   pkList: [],
   pkId: 0,
   isPk: false,
+  popQuit: false,
   clientId: '',
 
   openid: global.readData("openid"),
@@ -75,6 +76,10 @@ const questionStore = observable({
 
   changeOthers(value){
     this.others = value;
+  },
+
+  changePopQuit(value){
+    this.popQuit = value;
   },
 
   changeClientId(value){
@@ -121,6 +126,7 @@ const questionStore = observable({
     this.wrong = 0;
     this.pkId = 0;
     this.isPk = false;
+    this.popQuit = false;
     this.detail.forEach(item => {
       item.score = 0;
       item.wrong = 0;

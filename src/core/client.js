@@ -24,6 +24,10 @@ function on(type, callback){
 }
 
 function disconnect(){
+  console.log('disconnect socket');
+  if(!socket){
+    return
+  }
   try{
     socket.destroy();
   }
@@ -31,7 +35,6 @@ function disconnect(){
     console.log("-----")
     console.log(e);
   }
-  console.log('disconnect socket');
 }
 
 function getId(){
