@@ -16,7 +16,7 @@ import PkQuitView from '../../components/pk_quit_view'
 import ShareView from '../../components/share_view'
 import AdView from '../../components/ad_view'
 import global from '../../core/global'
-import client from "../../core/client";
+import client from "../../core/websocket";
 import Message from "../../core/message";
 import pagePath from '../../core/pagePath'
 
@@ -60,14 +60,10 @@ class PkQuestionPage extends Component {
       this.serveChoose(data);
     })
 
-    client.on(Message.TYPE_EXIT_MATCH, data => {
+    client.on(Message.TYPE_QUIT, data => {
       console.log(data, '退出')
       console.log(data.nickName, '退出');
       questionStore.changePopQuit(true);
-    })
-
-    client.on(Message.TYPE_DISCONNECT, data=>{
-      console.log(data, '断开网络');
     })
   }
 
@@ -93,15 +89,15 @@ class PkQuestionPage extends Component {
     });
   }
 
-  serveChoose(data){
+  serveChoose(res){
 
-    var index = data.obj.index;
+    var index = res.data.index;
 
     const { questionStore } = this.props
     const obj = questionStore.getCurQuestion();
 
     var isRight = obj.right == index + 1;
-    var isSelf = data.player.id == questionStore.clientId;
+    var isSelf = res.player.id == questionStore.clientId;
 
     this.setState({
       showAnswer: true,
