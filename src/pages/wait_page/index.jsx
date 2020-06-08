@@ -11,7 +11,7 @@ import scope from '../../utils/scope'
 import global from '../../core/global'
 import listener from "../../core/listener";
 import Message from "../../core/message";
-import client from "../../core/websocket";
+import client from "../../core/taroSocket";
 import PageView from '../../components/page_view'
 import pagePath from '../../core/pagePath'
 
@@ -43,51 +43,20 @@ class WaitPage extends Component {
     conn() {
         const { questionStore } = this.props
         let nickName = questionStore.nickName;
+        // questionStore.changeClientId(questionStore.openid);
 
-        // client.init("http://localhost:7788");
         client.init({
             nickName: nickName,
             avatarUrl: questionStore.avatarUrl,
             openid: questionStore.openid,
             gender: questionStore.gender,
         });
-
-        questionStore.changeClientId(questionStore.openid);
-
-        // client.on(Message.TYPE_CONNECT, () => {
-        //     questionStore.changeClientId(client.getId());
-        //     client.send(Message.TYPE_LOGIN, { 
-        //       nickName: nickName,
-        //       avatarUrl: questionStore.avatarUrl,
-        //       openid: questionStore.openid,
-        //       gender: questionStore.gender,
-        //     });
-        //     this.startMatch();
-        // });
-
-        // client.on(Message.TYPE_MESSAGE, data => {
-        //     this.addMessage(data.player.nickName + "：" + data.msg);
-        // });
-        // client.on(Message.TYPE_LOGIN, data => {
-        //     this.addMessage("【" + data.nickName + "  （" + data.id + "）进入房间】");
-        // });
-        // client.on(Message.TYPE_WAIT_MATCH, data => {
-        //     console.log(Message.TYPE_WAIT_MATCH);
-        //     console.log(data);
-        //     this.addMessage("当前玩家个数：" + data.length);
-        // })
-
+        
         client.on(Message.TYPE_END_MATCH, res => {
-            console.log(Message.TYPE_END_MATCH);
-            console.log(res);
-
-            this.setState({
-                ready: true
-            })
-
+            console.log(Message.TYPE_END_MATCH, res);
             var others = [];
             res.players.forEach(item => {
-                if (item.openid != questionStore.clientId) {
+                if (item.openid != questionStore.openid) {
                     others.push({
                         clientId: item.id,
                         openid: item.openid,
@@ -99,12 +68,20 @@ class WaitPage extends Component {
                 }
             })
             questionStore.changeOthers(others);
-            this.addMessage("匹配完成");
 
             client.send(Message.TYPE_LIST_ID, {
                 allSize: questionStore.allQuestion.length,
                 pkSize: pkSize
             });
+        })
+
+        client.on(Message.TYPE_LOGIN, res => {
+            console.log(Message.TYPE_LOGIN, res);
+        });
+
+        client.on(Message.TYPE_LIST_ID, res => {
+            console.log(Message.TYPE_LIST_ID, res);
+            questionStore.changePkList(res.data);
 
             setTimeout(() => {
                 Taro.redirectTo({
@@ -113,58 +90,17 @@ class WaitPage extends Component {
             }, 40);
         })
 
-        client.on(Message.TYPE_LIST_ID, res => {
-            console.log(res);
-            questionStore.changePkList(res.data);
-        })
-
         client.on(Message.TYPE_QUIT, res => {
-            console.log(Message.TYPE_QUIT);
-            console.log(res);
-            this.setState({
-                ready: false
-            })
-
-            // this.addMessage(data.nickName + "退出");
+            console.log(Message.TYPE_QUIT, res);
+            client.disconnect();
         })
-    }
-
-    say() {
-        if (this.state.ready) {
-            this.send("random " + Math.random());
-        }
-        else {
-            this.addMessage("尚未匹配完成");
-        }
-    }
-
-    clear() {
-        this.setState({
-            list: []
-        })
-    }
-
-    send(msg) {
-        client.send(Message.TYPE_MESSAGE, msg);
-    }
-
-    endMatch() {
-        client.disconnect();
     }
 
     getUserInfo() {
-        console.log('getUserInfo')
         const { questionStore } = this.props
         if (!questionStore.nickName) {
             questionStore.changePopLogin(true);
         }
-    }
-
-    addMessage(msg) {
-        console.log(msg);
-        this.setState({
-            list: [...this.state.list, msg]
-        })
     }
 
     componentWillReact() {
@@ -225,27 +161,6 @@ class WaitPage extends Component {
                         <View className='other-name'>{otherNickName}</View>
                     </View>
 
-                    <View className='debug'>
-                        <View className='state-tip'>{nickName} ：{this.state.word}</View>
-
-                        <View className='btn-list'>
-                            <View className="btn" onClick={this.clear.bind(this)}>清除</View>
-                            <View className="btn" onClick={this.say.bind(this)}>发送</View>
-                            <View className="btn" onClick={this.endMatch.bind(this)}>退出</View>
-                        </View>
-
-                        <View className='msg-list'>
-                            {
-                                this.state.list.map((item, index) => {
-                                    return (
-                                        <View key={'k_' + index} className='msg-item'>
-                                            <View className='msg'>{item}</View>
-                                        </View>
-                                    )
-                                })
-                            }
-                        </View>
-                    </View>
                 </View>
             </PageView>
         )

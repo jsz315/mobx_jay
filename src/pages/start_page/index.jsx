@@ -9,8 +9,7 @@ import ShareView from '../../components/share_view'
 import PageView from '../../components/page_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
-import client from "../../core/websocket";
-
+import client from "../../core/taroSocket";
 import pagePath from '../../core/pagePath'
 
 @inject('questionStore')

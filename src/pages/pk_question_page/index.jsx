@@ -16,7 +16,7 @@ import PkQuitView from '../../components/pk_quit_view'
 import ShareView from '../../components/share_view'
 import AdView from '../../components/ad_view'
 import global from '../../core/global'
-import client from "../../core/websocket";
+import client from "../../core/taroSocket";
 import Message from "../../core/message";
 import pagePath from '../../core/pagePath'
 
@@ -97,7 +97,7 @@ class PkQuestionPage extends Component {
     const obj = questionStore.getCurQuestion();
 
     var isRight = obj.right == index + 1;
-    var isSelf = res.player.id == questionStore.clientId;
+    var isSelf = res.player.openid == questionStore.openid;
 
     this.setState({
       showAnswer: true,

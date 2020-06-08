@@ -180,6 +180,15 @@ function saveData(key, value){
   Taro.setStorageSync(key, value)
 }
 
+function sleep(timer){
+  return new Promise(resolve=>{
+    setTimeout(() => {
+      resolve();
+    }, timer);
+  })
+  
+}
+
 
 
 export default {
@@ -198,5 +207,6 @@ export default {
   shareData,
   platform,
   isFilter,
-  h5Debug
+  h5Debug,
+  sleep
 }

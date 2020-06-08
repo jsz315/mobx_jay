@@ -206,12 +206,14 @@ const questionStore = observable({
   },
 
   getCurQuestion(){
-    if(this.isPk){
+    if(this.isPk && this.pkList.length > 0){
       var id = this.pkList[this.pkId];
       return this.allQuestion[id];
     }
-    
-    return this.list[this.id];
+    if(this.list.length > 0){
+      return this.list[this.id];
+    }
+    return {};
   },
 
   filter(list){
@@ -277,7 +279,6 @@ const questionStore = observable({
 
   async initAsync() {
     let detail = [];
-    let res = await global.getAllQuestion();
     levels.forEach(element => {
       element.list = [];
       detail.push({
@@ -292,6 +293,13 @@ const questionStore = observable({
 
     this.detail = detail;
 
+    let res = await global.getAllQuestion();
+    console.log("res=====", res);
+    if(!res){
+      await sleep(900);
+      console.log("重新请求数据");
+      res = await global.getAllQuestion();
+    }
     res.data.forEach((element, index) => {
       let id = element.level - 1;
       if(id < levels.length){
