@@ -49,6 +49,7 @@ class LoginView extends Component {
     let authorizeRes = await scope.authorize("scope.userInfo");
     if(authorizeRes){
       let userInfoRes = await scope.getUserInfo();
+      console.log(userInfoRes);
       if(userInfoRes){
         await this.saveUser(userInfoRes);
       }
@@ -99,7 +100,7 @@ class LoginView extends Component {
           <View className='login-btns'>
             <Button className='login-btn hide' onClick={this.close.bind(this)}>暂不登录</Button>
             {/* <View className='login-btn' onClick={this.login.bind(this)}>立即登录</View> */}
-            <Button className='login-btn' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
+            <Button className='login-btn' open-type="getUserInfo" onClick={this.login.bind(this)} onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
           </View>
         </View>
       </View>
