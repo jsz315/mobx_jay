@@ -33,9 +33,12 @@ let filterData = {
 }
 
 const platform = getPlatform();
-
-initShare();
-initFilter();
+setTimeout(() => {
+  initShare();
+}, 300);
+setTimeout(() => {
+  initFilter();
+}, 600);
 
 function getUrl(type, file) {
     if (type == 1) {
@@ -54,14 +57,22 @@ function httpRequest(url, method, data) {
             url: url,
             data: data,
             method,
-            method,
             header: {
                 'content-type': 'application/json'
             },
-            success(res) {
-                console.log(url);
+            async success(res) {
+                console.log(url, res.statusCode);
                 console.log(res);
-                resolve(res);
+                // resolve(res);
+                if(res.statusCode == 502){
+                  console.warn("502错误，重新请求");
+                  await sleep(900);
+                  let obj = await httpRequest(url, method, data);
+                  resolve(obj);
+                }
+                else{
+                  resolve(res);
+                }
             },
             fail(res) {
                 console.log("[fail request]", res);

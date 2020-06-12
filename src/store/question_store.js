@@ -75,6 +75,7 @@ const questionStore = observable({
   players: [],
 
   changeOthers(value){
+    console.log("changeOthers", value);
     this.others = value;
   },
 
@@ -98,7 +99,6 @@ const questionStore = observable({
     this.pkList = value;
   },
   
-
   changeShowAd(value){
     this.showAd = value
   },
@@ -161,6 +161,28 @@ const questionStore = observable({
     this.popShare = value
   },
 
+  checkOver(){
+    if(this.isPk){
+      if(this.pkId >= this.pkList.length - 1){
+        return true;
+      }
+    }
+    else{
+      if(this.wrong >= 3){
+        return true;
+      }
+      if(this.id >= this.list.length - 1){
+        if(levelId < levels.length - 1){
+          
+        }
+        else{
+          return true;
+        }
+      }
+    }
+    return false;
+  },
+
   next() {
     console.log("next", Math.random());
     if(this.isPk){
@@ -175,7 +197,7 @@ const questionStore = observable({
       if(this.id >= this.list.length - 1){
         if(levelId < levels.length - 1){
           ++levelId;
-          this.initLevel();
+          this.initLevelData();
         }
         else{
           this.gameOver();
@@ -187,8 +209,12 @@ const questionStore = observable({
     }
   },
 
-  initLevelData(){
+  resetLevelData(){
     levelId = 0;
+    this.initLevelData();
+  },
+
+  initLevelData(){
     this.curLevel = levels[levelId];
     let tempList = this.filter(this.curLevel.list);
     this.list =  tooler.randomList(tempList, 10);
@@ -256,6 +282,9 @@ const questionStore = observable({
 
   gameOver(){
     this.popOver = true;
+    if(this.isPk){
+      return;
+    }
     global.updateScore({
       openid: this.openid,
       score: this.score
@@ -293,21 +322,28 @@ const questionStore = observable({
 
     this.detail = detail;
 
-    let res = await global.getAllQuestion();
-    console.log("res=====", res);
-    if(!res){
-      await sleep(900);
-      console.log("重新请求数据");
-      res = await global.getAllQuestion();
+    if(this.allQuestion.length > 0){
+      console.log("使用缓存数据");
     }
-    res.data.forEach((element, index) => {
+    else{
+      let res = await global.getAllQuestion();
+      console.log("网络请求数据", res);
+      if(!res){
+        await sleep(900);
+        console.log("重新请求数据");
+        res = await global.getAllQuestion();
+      }
+      this.allQuestion = res.data;
+    }
+    
+    this.allQuestion.forEach((element, index) => {
       let id = element.level - 1;
       if(id < levels.length){
         levels[id].list.push(element);
       }
     });
 
-    this.allQuestion = res.data;  
+    // this.allQuestion = res.data;  
   }
 })
 export default questionStore

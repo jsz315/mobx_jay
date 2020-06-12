@@ -10,6 +10,7 @@ import LoginView from '../../components/login_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
 import listener from "../../core/listener";
+import ai from "../../core/ai";
 import Message from "../../core/message";
 import client from "../../core/taroSocket";
 import PageView from '../../components/page_view'
@@ -17,6 +18,7 @@ import pagePath from '../../core/pagePath'
 
 let screenHeight = 300;
 let pkSize = 9;
+let timerId;
 
 @inject('questionStore')
 @observer
@@ -25,8 +27,9 @@ class WaitPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            word: "匹配中",
-            list: []
+            word: "等待匹配...",
+            list: [],
+            second: 20
         }
     }
 
@@ -38,6 +41,7 @@ class WaitPage extends Component {
         const { questionStore } = this.props
         // questionStore.initAsync();
         this.conn();
+		ai.running = false;
     }
 
     conn() {
@@ -54,6 +58,7 @@ class WaitPage extends Component {
         
         client.on(Message.TYPE_END_MATCH, res => {
             console.log(Message.TYPE_END_MATCH, res);
+			clearInterval(timerId);
             var others = [];
             res.players.forEach(item => {
                 if (item.openid != questionStore.openid) {
@@ -90,6 +95,11 @@ class WaitPage extends Component {
             }, 40);
         })
 
+ 		client.on(Message.TYPE_USE_AI, res => {
+			console.log("使用本地机器人");
+		});
+		
+
         client.on(Message.TYPE_QUIT, res => {
             console.log(Message.TYPE_QUIT, res);
             client.disconnect();
@@ -113,11 +123,22 @@ class WaitPage extends Component {
     }
 
     componentDidMount() {
-        console.log('wait componentDidHide', this)
+        console.log('wait componentDidHide', this);
+		timerId = setInterval(()=>{
+			var second = this.state.second;
+			if(--second == 0){
+				clearInterval(timerId);
+				ai.init();
+			}
+			this.setState({
+				second: second
+			})
+		}, 1000)
     }
 
     componentWillUnmount() {
         console.log('wait componentWillUnmount', this)
+		clearInterval(timerId);
     }
 
     componentDidShow() {
@@ -156,6 +177,9 @@ class WaitPage extends Component {
                     <View className='state'>
                         <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
                         <View className='my-name' onClick={this.getUserInfo.bind(this)}>{nickName}</View>
+
+                        <View className='timer'>{this.state.second}</View>
+						<View className='word'>{this.state.word}</View>
 
                         <Image className='other-avatar' src={otherAvatarUrl}></Image>
                         <View className='other-name'>{otherNickName}</View>

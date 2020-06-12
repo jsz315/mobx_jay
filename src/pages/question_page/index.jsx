@@ -37,7 +37,7 @@ class QuestionPage extends Component {
   async componentWillMount () {
     const { questionStore } = this.props
     questionStore.changeIsPk(false);
-    questionStore.initLevelData();
+    questionStore.resetLevelData();
     // await questionStore.initAsync();
   }
 
@@ -89,9 +89,10 @@ class QuestionPage extends Component {
         showAnswer: false,
       })
 
-      if(questionStore.wrong >= 3){
+      if(questionStore.checkOver()){
         console.log("over");
         questionStore.gameOver();
+        this.refs.question.playResultSound();
       }
       else{
         this.refs.question.next();

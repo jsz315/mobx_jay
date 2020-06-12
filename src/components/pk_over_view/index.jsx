@@ -70,7 +70,7 @@ class PkOverView extends Component {
       return <View></View>;
     }
     let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
-    let nickName = questionStore.nickName || "点击登录账户";
+    let nickName = questionStore.nickName || "未登录账户";
 
     let tip = '挑战成功'
     let rs = 'win'
@@ -108,7 +108,7 @@ class PkOverView extends Component {
           <View className='state-tip'>{tip}</View>
           <View className={`state-face ${rs}`}></View>
 
-          <Image className='my-avatar' src={player1.avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
+          <Image className='my-avatar' src={player1.avatarUrl}></Image>
           <View className='my-name'>{player1.nickName}</View>
           <View className='my-score'>{player1.score}分</View>
 

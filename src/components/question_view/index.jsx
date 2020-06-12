@@ -18,6 +18,9 @@ let right = 0;
 let innerAudioContext = null;
 let rightSound = null;
 let wrongSound = null;
+let loseSound = null;
+let winSound = null;
+let resultSound = null;
 
 @inject('questionStore')
 @observer
@@ -56,7 +59,24 @@ class QuestionView extends Component {
     // wrongSound.volume = 1;
     wrongSound.src = 'https://wlwol.cn/asset/sound/wrong.mp3'
 
-    // innerAudioContext = tt.createInnerAudioContext();
+    loseSound = Taro.createInnerAudioContext();
+    loseSound.autoplay = false;
+    loseSound.obeyMuteSwitch = false;
+    // loseSound.volume = 1;
+    loseSound.src = 'https://wlwol.cn/asset/sound/lose.mp3'
+
+    winSound = Taro.createInnerAudioContext();
+    winSound.autoplay = false;
+    winSound.obeyMuteSwitch = false;
+    // winSound.volume = 1;
+    winSound.src = 'https://wlwol.cn/asset/sound/win.mp3'
+
+    resultSound = Taro.createInnerAudioContext();
+    resultSound.autoplay = false;
+    resultSound.obeyMuteSwitch = false;
+    // resultSound.volume = 1;
+    resultSound.src = 'https://wlwol.cn/asset/sound/result.mp3'
+
     innerAudioContext = Taro.createInnerAudioContext();
     innerAudioContext.autoplay = false;
     innerAudioContext.obeyMuteSwitch = false;
@@ -116,6 +136,18 @@ class QuestionView extends Component {
 
   playWrongSound(){
     wrongSound.play()
+  }
+
+  playLoseSound(){
+    loseSound.play()
+  }
+
+  playWinSound(){
+    winSound.play()
+  }
+
+  playResultSound(){
+    resultSound.play()
   }
 
   next(){

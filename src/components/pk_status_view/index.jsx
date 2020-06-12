@@ -57,6 +57,10 @@ class PkStatusView extends Component {
 
     let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
     let nickName = questionStore.nickName || "点击登录账户";
+
+    const style = {
+      width: (questionStore.pkId + 1) / questionStore.pkList.length * 100 + "%"
+    }
     
     return (
       <View className='pk-status-view'>
@@ -68,6 +72,10 @@ class PkStatusView extends Component {
         <Image className='other-avatar' src={other.avatarUrl}></Image>
         <View className='other-name'>{other.nickName}</View>
         <View className='other-score'>当前得分:{other.score}</View>
+
+        <View className='progress'>
+          <View className='color' style={style}></View>
+        </View>
        
       </View>
     )

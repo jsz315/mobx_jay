@@ -9,6 +9,7 @@ import ShareView from '../../components/share_view'
 import PageView from '../../components/page_view'
 import scope from '../../utils/scope'
 import global from '../../core/global'
+import ai from "../../core/ai";
 import client from "../../core/taroSocket";
 import pagePath from '../../core/pagePath'
 
@@ -83,6 +84,7 @@ class StartPage extends Component {
     pagePath.push("start");
     console.log(pagePath.path, "page path");
     client.disconnect();
+    ai.running = false;
     // if(pagePath.prev() == 'wait'){
     //   client.disconnect();
     // }

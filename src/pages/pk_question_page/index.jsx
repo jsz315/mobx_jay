@@ -16,6 +16,7 @@ import PkQuitView from '../../components/pk_quit_view'
 import ShareView from '../../components/share_view'
 import AdView from '../../components/ad_view'
 import global from '../../core/global'
+import ai from "../../core/ai";
 import client from "../../core/taroSocket";
 import Message from "../../core/message";
 import pagePath from '../../core/pagePath'
@@ -24,6 +25,7 @@ let right = 0;
 let innerAudioContext = null;
 let rightSound = null;
 let wrongSound = null;
+let timerId;
 
 @inject('questionStore')
 @observer
@@ -65,8 +67,11 @@ class PkQuestionPage extends Component {
       console.log(data.nickName, '退出');
       questionStore.changePopQuit(true);
     })
-  }
 
+    clearTimeout(timerId);
+    timerId = setTimeout(ai.choose, Math.floor(Math.random() * 10 + 4) * 1000);
+  }
+  
   componentWillUnmount () {
     client.disconnect();
   }
@@ -90,7 +95,9 @@ class PkQuestionPage extends Component {
   }
 
   serveChoose(res){
-
+    clearTimeout(timerId);
+    
+    console.log("serveChoose", res);
     var index = res.data.index;
 
     const { questionStore } = this.props
@@ -137,23 +144,27 @@ class PkQuestionPage extends Component {
         showAnswer: false,
       })
 
-      // if(questionStore.wrong >= 3){
-      //   console.log("over");
-      //   questionStore.gameOver();
-      // }
-      // else{
-      //   this.refs.question.next();
-      // }
+      if(questionStore.checkOver()){
+        console.log("over");
+        questionStore.gameOver();
+        this.refs.question.playResultSound();
 
-      this.refs.question.next();
-      if(questionStore.popOver){
-        console.log("over ===")
         client.disconnect();
+        ai.running = false;
+        let other = questionStore.others[0];
+        if(other.score > questionStore.score){
+          this.refs.question.playLoseSound()
+        }
+        else{
+          this.refs.question.playWinSound()
+        }
       }
-
+      else{
+        this.refs.question.next();
+        timerId = setTimeout(ai.choose, Math.floor(Math.random() * 10 + 4) * 1000);
+      }
     }, 2000)
   }
-
   
   render () {
     const { questionStore } = this.props

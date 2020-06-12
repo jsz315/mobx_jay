@@ -72,5 +72,6 @@ export default {
 	init,
 	send,
 	on,
-	disconnect,
+  disconnect,
+  listeners
 }
