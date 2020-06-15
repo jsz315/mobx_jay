@@ -107,6 +107,9 @@ class RankPage extends Component {
   }
 
   share(){
+    if(global.platform == 1){
+      return;
+    }
     const { questionStore } = this.props
     questionStore.changePopShare(true)
   }
@@ -131,6 +134,8 @@ class RankPage extends Component {
     else{
       view = <View className='my-tip' onClick={this.getUserInfo.bind(this)}>点击登录查看当前排名</View>
     }
+    
+    // <Button className='my-btn' open-type={`${global.platform == "tt" ? "share" : ""}`} onClick={this.share.bind(this)}>
     return (
       <PageView>
         <View className='rank-page'>
@@ -138,10 +143,10 @@ class RankPage extends Component {
             <View className='my-rank'>
               <Image className='my-head' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
               {view}
-              <View className='my-btn' onClick={this.share.bind(this)}>
+              <Button className='my-btn' open-type={`${global.platform == 1 ? "share" : ""}`} onClick={this.share.bind(this)}>
                 <View className='my-ico'></View>
                 <View className='my-share'>分享</View>
-              </View>
+              </Button>
             </View>
           </View>
           

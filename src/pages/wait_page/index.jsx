@@ -1,6 +1,17 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Video, Image } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
+import Taro, {
+    Component
+} from '@tarojs/taro'
+import {
+    View,
+    Button,
+    Text,
+    Video,
+    Image
+} from '@tarojs/components'
+import {
+    observer,
+    inject
+} from '@tarojs/mobx'
 
 import './index.less'
 import AudioView from '../../components/audio_view'
@@ -38,14 +49,18 @@ class WaitPage extends Component {
     }
 
     async componentWillMount() {
-        const { questionStore } = this.props
+        const {
+            questionStore
+        } = this.props
         // questionStore.initAsync();
         this.conn();
-		ai.running = false;
+        ai.setRunning(false);
     }
 
     conn() {
-        const { questionStore } = this.props
+        const {
+            questionStore
+        } = this.props
         let nickName = questionStore.nickName;
         // questionStore.changeClientId(questionStore.openid);
 
@@ -55,10 +70,10 @@ class WaitPage extends Component {
             openid: questionStore.openid,
             gender: questionStore.gender,
         });
-        
+
         client.on(Message.TYPE_END_MATCH, res => {
             console.log(Message.TYPE_END_MATCH, res);
-			clearInterval(timerId);
+            clearInterval(timerId);
             var others = [];
             res.players.forEach(item => {
                 if (item.openid != questionStore.openid) {
@@ -87,7 +102,10 @@ class WaitPage extends Component {
         client.on(Message.TYPE_LIST_ID, res => {
             console.log(Message.TYPE_LIST_ID, res);
             questionStore.changePkList(res.data);
-
+			if(ai.getRunning()){
+				console.log("机器人模式");
+				client.disconnect();
+			}
             setTimeout(() => {
                 Taro.redirectTo({
                     url: '/pages/pk_question_page/index'
@@ -95,10 +113,10 @@ class WaitPage extends Component {
             }, 40);
         })
 
- 		client.on(Message.TYPE_USE_AI, res => {
-			console.log("使用本地机器人");
-		});
-		
+        client.on(Message.TYPE_USE_AI, res => {
+            console.log("使用本地机器人");
+        });
+
 
         client.on(Message.TYPE_QUIT, res => {
             console.log(Message.TYPE_QUIT, res);
@@ -107,7 +125,9 @@ class WaitPage extends Component {
     }
 
     getUserInfo() {
-        const { questionStore } = this.props
+        const {
+            questionStore
+        } = this.props
         if (!questionStore.nickName) {
             questionStore.changePopLogin(true);
         }
@@ -124,21 +144,21 @@ class WaitPage extends Component {
 
     componentDidMount() {
         console.log('wait componentDidHide', this);
-		timerId = setInterval(()=>{
-			var second = this.state.second;
-			if(--second == 0){
-				clearInterval(timerId);
-				ai.init();
-			}
-			this.setState({
-				second: second
-			})
-		}, 1000)
+        timerId = setInterval(() => {
+            var second = this.state.second;
+            if (--second == 0) {
+                clearInterval(timerId);
+                ai.init();
+            }
+            this.setState({
+                second: second
+            })
+        }, 1000)
     }
 
     componentWillUnmount() {
         console.log('wait componentWillUnmount', this)
-		clearInterval(timerId);
+        clearInterval(timerId);
     }
 
     componentDidShow() {
@@ -156,13 +176,15 @@ class WaitPage extends Component {
     }
 
     render() {
-        const { questionStore } = this.props
+        const {
+            questionStore
+        } = this.props
         if (!questionStore) {
-            return <View></View>
+            return <View> </View>
         }
         let other = questionStore.others[0];
         if (!other) {
-            return <View></View>;
+            return <View> </View>;
         }
 
         let avatarUrl = questionStore.avatarUrl || "https://wlwol.cn/asset/img/boy.jpg";
@@ -171,24 +193,36 @@ class WaitPage extends Component {
         let otherAvatarUrl = other.avatarUrl || "https://wlwol.cn/asset/img/loading.gif";
         let otherNickName = other.nickName || "匹配中";
 
-        return (
-            <PageView>
-                <View className='wait-page'>
-                    <View className='state'>
-                        <Image className='my-avatar' src={avatarUrl} onClick={this.getUserInfo.bind(this)}></Image>
-                        <View className='my-name' onClick={this.getUserInfo.bind(this)}>{nickName}</View>
+        return ( 
+			<PageView>
+				<View className = 'wait-page'>
+					<View className = 'state'>
+					<Image className = 'my-avatar' src = {avatarUrl} onClick = {this.getUserInfo.bind(this)} >
+					</Image>
+					<View className = 'my-name' onClick = {
+						this.getUserInfo.bind(this)
+					} > {
+						nickName
+					} 
+					</View>
 
-                        <View className='timer'>{this.state.second}</View>
-						<View className='word'>{this.state.word}</View>
+            <View className = 'timer'> {
+                this.state.second
+            } </View> <View className = 'word' > {
+                this.state.word
+            } </View>
 
-                        <Image className='other-avatar' src={otherAvatarUrl}></Image>
-                        <View className='other-name'>{otherNickName}</View>
-                    </View>
+            <Image className = 'other-avatar'
+            src = {
+                otherAvatarUrl
+            } > </Image>
+			<View className = 'other-name' > {
+                otherNickName
+            } </View> </View>
 
-                </View>
-            </PageView>
+            </View> </PageView>
         )
     }
 }
 
-export default WaitPage 
+export default WaitPage

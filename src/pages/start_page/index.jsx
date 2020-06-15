@@ -84,7 +84,7 @@ class StartPage extends Component {
     pagePath.push("start");
     console.log(pagePath.path, "page path");
     client.disconnect();
-    ai.running = false;
+    ai.setRunning(false);
     // if(pagePath.prev() == 'wait'){
     //   client.disconnect();
     // }

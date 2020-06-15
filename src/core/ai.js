@@ -20,9 +20,9 @@ function init(){
   var res = {
     players: [player]
   }
-  console.log("机器人调用");
+  console.log("机器人初始化");
   client.listeners[Message.TYPE_END_MATCH](res);
-  client.send(Message.TYPE_USE_AI);
+  // client.send(Message.TYPE_USE_AI);
 }
 
 function choose(){
@@ -36,8 +36,16 @@ function choose(){
   client.listeners[Message.TYPE_CHOOSE_ANSWER](res);
 }
 
+function setRunning(v){
+  running = v;
+}
+function getRunning(){
+  return running;
+}
+
 export default {
   init,
-  running,
+  setRunning,
+  getRunning,
   choose
 }

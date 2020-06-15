@@ -54,6 +54,9 @@ class OverView extends Component {
   }
 
   share(){
+    if(global.platform == 1){
+      return;
+    }
     const { questionStore } = this.props
     questionStore.changePopShare(true)
   }
@@ -98,7 +101,7 @@ class OverView extends Component {
           <View className='score-type'>{questionStore.curLevel.name}杰迷</View>
           
           <View className='btns'>
-            <View className='btn' onClick={this.share.bind(this)}>分享</View>
+            <Button className='btn' open-type={`${global.platform == 1 ? "share" : ""}`} onClick={this.share.bind(this)}>分享</Button>
             <View className='btn' onClick={this.goon.bind(this)}>榜单</View>
           </View>
         </View>

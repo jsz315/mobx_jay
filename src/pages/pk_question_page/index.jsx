@@ -89,9 +89,23 @@ class PkQuestionPage extends Component {
   }
 
   choose = (index, level) => {
-    client.send(Message.TYPE_CHOOSE_ANSWER, {
-      index, level
-    });
+    const { questionStore } = this.props
+    if(ai.getRunning()){
+      var res = {
+        data: {
+          index: index
+        },
+        player: {
+          openid: questionStore.openid
+        }
+      }
+      this.serveChoose(res);
+    }
+    else{
+      client.send(Message.TYPE_CHOOSE_ANSWER, {
+        index, level
+      });
+    }
   }
 
   serveChoose(res){
@@ -150,7 +164,7 @@ class PkQuestionPage extends Component {
         this.refs.question.playResultSound();
 
         client.disconnect();
-        ai.running = false;
+        ai.setRunning(false);
         let other = questionStore.others[0];
         if(other.score > questionStore.score){
           this.refs.question.playLoseSound()

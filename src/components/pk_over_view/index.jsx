@@ -54,6 +54,9 @@ class PkOverView extends Component {
   }
 
   share(){
+    if(global.platform == 1){
+      return;
+    }
     const { questionStore } = this.props
     questionStore.changePopShare(true)
   }
@@ -117,7 +120,7 @@ class PkOverView extends Component {
           <View className='other-score'>{player2.score}分</View>
           
           <View className='btns'>
-            <View className='btn' onClick={this.share.bind(this)}>分享</View>
+            <Button className='btn' open-type={`${global.platform == 1 ? "share" : ""}`} onClick={this.share.bind(this)}>分享</Button>
             <View className='btn' onClick={this.goon.bind(this)}>返回</View>
           </View>
         </View>

@@ -61,6 +61,7 @@ function on(type, callback) {
 }
 
 function disconnect() {
+  console.log("断开连接");
 	if(ws && ws.readyState == 1){
     ws.close();
   }
