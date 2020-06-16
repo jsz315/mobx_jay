@@ -29,7 +29,7 @@ class StartPage extends Component {
   }
 
   async componentWillMount () {
-    // this.initData();
+
   }
 
   async initData(){
@@ -50,22 +50,22 @@ class StartPage extends Component {
     await questionStore.initAsync();
   }
 
-  saveUser(userInfo){
-    const { questionStore } = this.props
-    questionStore.changeNickName(userInfo.nickName);
-    questionStore.changeAvatarUrl(userInfo.avatarUrl);
-    questionStore.changeGender(userInfo.gender);
+  // saveUser(userInfo){
+  //   const { questionStore } = this.props
+  //   questionStore.changeNickName(userInfo.nickName);
+  //   questionStore.changeAvatarUrl(userInfo.avatarUrl);
+  //   questionStore.changeGender(userInfo.gender);
 
-    global.setUser({
-      openid: questionStore.openid,
-      avatarUrl: questionStore.avatarUrl,
-      nickName: questionStore.nickName,
-      gender: questionStore.gender,
-      city: questionStore.city,
-      province: questionStore.province,
-      platform: global.platform
-    });
-  }
+  //   global.setUser({
+  //     openid: questionStore.openid,
+  //     avatarUrl: questionStore.avatarUrl,
+  //     nickName: questionStore.nickName,
+  //     gender: questionStore.gender,
+  //     city: questionStore.city,
+  //     province: questionStore.province,
+  //     platform: global.platform
+  //   });
+  // }
 
   componentWillReact () {
     //console.log('componentWillReact')
@@ -85,9 +85,6 @@ class StartPage extends Component {
     console.log(pagePath.path, "page path");
     client.disconnect();
     ai.setRunning(false);
-    // if(pagePath.prev() == 'wait'){
-    //   client.disconnect();
-    // }
   }
 
   componentDidHide () {
@@ -129,18 +126,6 @@ class StartPage extends Component {
    
   }
 
-  bindGetUserInfo(e){
-    console.log(e);
-    if(e.detail.userInfo){
-      this.saveUser(e.detail.userInfo);
-      this.setState({
-        showUserBtn: false
-      })
-    }
-    else{
-      Taro.showToast({title: '请先授权获取用户数据', icon: 'none'})
-    }
-  }
 
   bindContact (e) {
     console.log(e.detail.path)
@@ -149,20 +134,6 @@ class StartPage extends Component {
 
   render () {
     const { questionStore } = this.props
-
-    // {
-    //       this.state.showUserBtn == true && (
-    //         <View className='mask'>
-    //           <View className='pop'>
-    //             <View className='user-tip'>无需注册，直接点击下面按钮即可使用当前账户登录</View>
-    //             <Button className='user-btn' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
-    //           </View>
-    //         </View>
-    //       )
-    //     }
-
-    //<Button className="btn" open-type="contact" bindcontact="handleContact">联系我们</Button>
-    //<Button className="btn" open-type="contact" onContact={this.bindContact.bind(this)}>联系我们</Button>
 
     return (
       <PageView>

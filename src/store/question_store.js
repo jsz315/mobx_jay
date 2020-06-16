@@ -11,7 +11,7 @@ let levels = [
   },
   {
     level: 2,
-    name: "中等",
+    name: "普通",
     list: []
   },
   {
@@ -23,16 +23,30 @@ let levels = [
     level: 4,
     name: "资深",
     list: []
+  },
+  {
+    level: 5,
+    name: "骨灰",
+    list: []
   }
 ]
 
 let levelId = 0;
 
+function getSaveScore(){
+  var n = global.readData("score");
+  n = Number(n);
+  if(isNaN(n)){
+    return 0;
+  }
+  return n;
+}
+
 const questionStore = observable({
   id: 0,
   list: [],
   curLevel: null,
-  score: 0,
+  score: getSaveScore(),
   level: 1,
   right: 0,
   wrong: 0,
@@ -217,14 +231,14 @@ const questionStore = observable({
   initLevelData(){
     this.curLevel = levels[levelId];
     let tempList = this.filter(this.curLevel.list);
-    this.list =  tooler.randomList(tempList, 10);
+    this.list =  tooler.randomList(tempList, 5);
     this.levelName = this.curLevel.name;
     this.id = 0;
     this.popUpdate = true;
     // this.detail[levelId].lock = false;
     setTimeout(() => {
       this.popUpdate = false
-    }, 2000);
+    }, 2400);
   },
 
   initPkData(){
@@ -280,24 +294,41 @@ const questionStore = observable({
     this.detail[levelId].wrong += 1;
   },
 
-  gameOver(){
+  async gameOver(){
     this.popOver = true;
     if(this.isPk){
       return;
     }
-    global.updateScore({
-      openid: this.openid,
-      score: this.score
+    global.saveData("score", this.score);
+    global.setUser({
+      openid: questionStore.openid,
+      avatarUrl: questionStore.avatarUrl,
+      nickName: questionStore.nickName,
+      gender: questionStore.gender,
+      city: questionStore.city,
+      province: questionStore.province,
+      platform: global.platform,
+      score: questionStore.score
     })
   },
 
   addScore(n, isOther = false){
-    if(isOther){
-      this.others[0].score += n;
+    if(this.isPk){
+      if(isOther){
+        this.others[0].score += 1;
+      }
+      else{
+        this.score += 1;
+      }
     }
     else{
-      this.score += n;
-      this.detail[levelId].score += n;
+      if(isOther){
+        this.others[0].score += n;
+      }
+      else{
+        this.score += 4;
+        this.detail[levelId].score += 4;
+      }
     }
     
   },

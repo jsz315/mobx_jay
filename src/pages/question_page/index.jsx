@@ -58,7 +58,9 @@ class QuestionPage extends Component {
 
   onShareAppMessage (option) {
     // option.from === 'button'
-    return global.shareData
+    var obj = {...global.shareData};
+    obj.imageUrl = "";
+    return obj;
   }
 
   choose = (index, level) => {

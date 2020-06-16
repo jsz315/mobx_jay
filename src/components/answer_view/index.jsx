@@ -42,7 +42,7 @@ class AnswerView extends Component {
     //console.log('questionStore prop isRight ' + isRight)
     let tip = null;
     if(isRight){
-      tip = <View className={'title-tip word'}>获得积分 +{questionStore.curLevel.level}</View>
+      tip = <View className={'title-tip word'}>获得积分 +4</View>
     }
     else{
       tip = <View className={'title-tip word'}>累计错误 X {questionStore.wrong}</View>

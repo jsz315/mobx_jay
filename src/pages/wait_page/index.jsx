@@ -103,7 +103,7 @@ class WaitPage extends Component {
             console.log(Message.TYPE_LIST_ID, res);
             questionStore.changePkList(res.data);
 			if(ai.getRunning()){
-				console.log("机器人模式");
+				console.log("机器人模式打开");
 				client.disconnect();
 			}
             setTimeout(() => {

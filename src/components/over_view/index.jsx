@@ -68,6 +68,8 @@ class OverView extends Component {
       return <View></View>
     }
 
+    console.log(questionStore.detail);
+
     return (
       <View className='over-view'>
         <View className='pop-box'>

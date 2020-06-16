@@ -83,8 +83,9 @@ class RankPage extends Component {
   componentDidHide () { }
 
   onShareAppMessage (option) {
-    // option.from === 'button'
-    return global.shareData
+    var obj = {...global.shareData};
+    obj.imageUrl = "";
+    return obj;
   }
 
   onPageScroll(e){ // 滚动事件
@@ -107,6 +108,7 @@ class RankPage extends Component {
   }
 
   share(){
+    console.log("share");
     if(global.platform == 1){
       return;
     }

@@ -6,6 +6,8 @@ import './index.less'
 import global from '../../core/global'
 import scope from '../../utils/scope'
 
+import loginImg from '../../asset/img/login-img.png';
+
 let innerAudioContext;
 
 class LoginView extends Component {
@@ -89,18 +91,24 @@ class LoginView extends Component {
   }
 
   render () {
+    var view;
+    if(global.platform == 1){
+      view = <Button className='login-btn' onClick={this.login.bind(this)}>授权登录</Button>
+    }
+    else{
+      view = <Button className='login-btn' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
+    }
     return (
       <View className='login-view'>
         <View className='login-box'>
           <View className='login-title'>您还未登录</View>
           <View className='login-tip'>登录后可记录成绩及查看榜单</View>
           <View className='login-img'>
-            <Image className='login-avatar' mode='widthFix' src='https://wlwol.cn/asset/img/login-img.png'></Image>
+            <Image className='login-avatar' src={loginImg}></Image>
           </View>
           <View className='login-btns'>
             <Button className='login-btn hide' onClick={this.close.bind(this)}>暂不登录</Button>
-            {/* <View className='login-btn' onClick={this.login.bind(this)}>立即登录</View> */}
-            <Button className='login-btn' open-type="getUserInfo" onClick={this.login.bind(this)} onGetUserInfo={this.bindGetUserInfo.bind(this)}>授权登录</Button>
+            {view}
           </View>
         </View>
       </View>

@@ -45,6 +45,7 @@ class ShareView extends Component {
   }
 
   share(item){
+    this.close();
     console.log(item);
     if(item.type == global.platform){
       return;
