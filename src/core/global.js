@@ -51,7 +51,7 @@ function getUrl(type, file) {
     return "";
 }
 
-function httpRequest(url, method, data) {
+function httpRequest(url, method, data, times = 0) {
     return new Promise(resolve => {
         Taro.request({
             url: url,
@@ -65,10 +65,15 @@ function httpRequest(url, method, data) {
                 console.log(res);
                 // resolve(res);
                 if(res.statusCode == 502){
-                  console.warn("502错误，重新请求");
-                  await sleep(900);
-                  let obj = await httpRequest(url, method, data);
-                  resolve(obj);
+                  console.warn("502错误，重新请求", times);
+                  if(times > 4){
+                      resolve();
+                  }
+                  else{
+                    await sleep(900);
+                    let obj = await httpRequest(url, method, data, times + 1);
+                    resolve(obj);
+                  }
                 }
                 else{
                   resolve(res);
