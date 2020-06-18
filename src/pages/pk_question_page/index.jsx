@@ -175,7 +175,7 @@ class PkQuestionPage extends Component {
       }
       else{
         this.refs.question.next();
-        timerId = setTimeout(ai.choose, Math.floor(Math.random() * 10 + 4) * 1000);
+        timerId = setTimeout(ai.choose, Math.floor(Math.random() * 8 + 4) * 1000);
       }
     }, 2000)
   }

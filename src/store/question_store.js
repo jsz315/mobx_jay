@@ -230,7 +230,8 @@ const questionStore = observable({
 
   initLevelData(){
     this.curLevel = levels[levelId];
-    let tempList = this.filter(this.curLevel.list);
+    // let tempList = this.filter(this.curLevel.list);
+    let tempList = this.curLevel.list;
     this.list =  tooler.randomList(tempList, 5);
     this.levelName = this.curLevel.name;
     this.id = 0;
@@ -366,6 +367,10 @@ const questionStore = observable({
       }
       this.allQuestion = res.data;
     }
+
+    console.log("过滤前总数", this.allQuestion.length);
+    this.allQuestion = this.filter(this.allQuestion);
+    console.log("过滤后总数", this.allQuestion.length)
     
     this.allQuestion.forEach((element, index) => {
       let id = element.level - 1;
