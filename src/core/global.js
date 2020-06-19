@@ -145,6 +145,10 @@ function getOpenid(code) {
         return httpRequest(host + '/qq/login', 'GET', {
             code: code
         });
+    } else if (process.env.TARO_ENV === 'alipay') {
+        return httpRequest(host + '/alipay/login', 'GET', {
+            code: code
+        });
     } else if (process.env.TARO_ENV === 'h5') {
         return Promise.resolve({
             data: {

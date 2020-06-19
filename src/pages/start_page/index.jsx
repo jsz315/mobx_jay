@@ -140,7 +140,7 @@ class StartPage extends Component {
         <View className='start-page'>
           <View className='btns'>
             <View className="btn" onClick={this.jump.bind(this, 1)}>开始测试</View>
-            <View className="btn" onClick={this.jump.bind(this, 2)}>压力模式</View>
+            {global.platform !== 2 && <View className="btn" onClick={this.jump.bind(this, 2)}>压力模式</View>}
             <View className="btn" onClick={this.jump.bind(this, 3)}>查看榜单</View>
           </View>
         </View>

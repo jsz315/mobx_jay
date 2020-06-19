@@ -37,7 +37,8 @@ function authorize(key){
 
 function login(){
   return new Promise(resolve => {
-    my.login({
+    my.getAuthCode({
+      scopes: 'auth_user',
       success(res) {
         console.log(`login 调用成功`);
         console.log(res);
